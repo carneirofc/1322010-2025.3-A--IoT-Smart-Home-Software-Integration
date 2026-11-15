@@ -1,0 +1,76 @@
+# =============================================================================
+#  report.yaml — single source of truth for the report's identity.
+#  Everything on the cover, title page, abstracts and document properties
+#  comes from here. The body lives in content/*.md (built in filename order).
+#  Values are parsed as Markdown (*italic*, **bold**, `code` work).
+# =============================================================================
+report:
+  institution: UNIVERSIDADE FEDERAL DE JUIZ DE FORA
+  department: DEPARTAMENTO DE CIÊNCIA DA COMPUTAÇÃO
+  course: 1322010-2025.3-A — ANÁLISE DE DADOS DE DISPOSITIVOS IOT E DE SENSORES
+  logo: assets/ufjf-logo.jpg
+  logo-width: 5cm
+
+  authors:
+    - Claudio Ferreira Carneiro
+
+  title: CASA MONITORADA — ESPECIFICAÇÃO DE UM SISTEMA IOT DE AUTOMAÇÃO RESIDENCIAL, EFICIÊNCIA ENERGÉTICA E SEGURANÇA
+  subtitle: "Atividade prática do Capítulo 5 — Projeto integrador de software IoT (Tema 3)"
+
+  nature: >-
+    Documento de especificação de software apresentado à disciplina Análise de
+    Dados de Dispositivos IoT e de Sensores (1322010-2025.3-A), do Departamento
+    de Ciência da Computação da Universidade Federal de Juiz de Fora.
+  advisor: ""
+  advisor-label: "Orientador:"
+
+  city: Leopoldina-MG
+  year: 2026
+
+  resumo: >-
+    Este documento especifica o software de um sistema de Internet das Coisas
+    para uma residência com geração solar fotovoltaica. O sistema mede a
+    energia trocada com a rede, a geração solar e as duas maiores cargas da
+    casa, estima o custo da conta em reais e aciona cargas adiáveis — bomba da
+    piscina, lavadora e iluminação externa — quando há excedente de geração ou
+    risco de sobrecarga. Também monitora a segurança e a saúde da casa:
+    detecção de gás e de CO2, com alarme sonoro e luminoso, e qualidade do
+    fornecimento de energia. A especificação apresenta o problema e os usuários,
+    o dicionário de dados dos sensores, a arquitetura de integração do sensor à
+    aplicação, doze regras de negócio no formato SE/ENTÃO, os protótipos das
+    telas e a análise de riscos e resiliência. O sensor de gás tem alarme
+    local próprio; o software aciona o alarme da casa e acrescenta avisos,
+    histórico e ações secundárias. O protótipo visual reúne as telas, em páginas HTML
+    estáticas, e os diagramas do sistema. O projeto se apoia nos conceitos das
+    cinco unidades da disciplina: coleta, qualidade, armazenamento e
+    integração de dados de sensores.
+  palavras-chave: [Internet das Coisas, Automação residencial, Eficiência energética, Energia solar fotovoltaica, MQTT]
+
+  abstract: >-
+    This document specifies the software of an Internet of Things system for a
+    home with rooftop solar generation. The system measures the energy
+    exchanged with the grid, the solar generation and the two largest loads of
+    the house, estimates the electricity bill in reais and switches deferrable
+    loads — pool pump, washing machine and outdoor lights — when there is
+    surplus generation or a risk of overload. It also monitors the safety and
+    health of the house: gas and CO2 detection, with an audible and visual
+    alarm, and the quality of the power supply. The specification covers the problem
+    and its users, the sensor data dictionary, the integration architecture
+    from sensor to application, twelve IF/THEN business rules, the screen
+    prototypes and the risk and resilience analysis. The gas sensor has its own
+    local alarm; the software triggers the house alarm and adds notifications,
+    history and secondary actions.
+    The visual prototype comprises the screens, as static HTML pages, and the
+    system diagrams. The design builds on the five units of the course: sensor
+    data collection, quality, storage and integration.
+  keywords: [Internet of Things, Home automation, Energy efficiency, Solar photovoltaics, MQTT]
+
+# ---------------------------------------------------------------------------
+#  Pretextual lists (PDF). The summary (SUMÁRIO) is always generated.
+# ---------------------------------------------------------------------------
+lof: true
+lot: true
+
+mainfont: TeX Gyre Termes
+monofont: Liberation Mono
+monofontoptions: [Scale=MatchLowercase]
