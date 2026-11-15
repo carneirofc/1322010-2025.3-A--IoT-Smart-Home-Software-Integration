@@ -8,7 +8,7 @@ um plano de desenvolvimento.
 Os requisitos funcionais, com as regras e telas que os atendem, são:
 
 - RF1: apresentar consumo, geração e troca com a rede com atraso máximo de
-  10 s (Visão geral).
+  15 s (Visão geral).
 - RF2: calcular o custo do dia e do mês e projetar a fatura (R4, Visão
   geral).
 - RF3: acionar cargas adiáveis com o excedente solar e cumprir o compromisso
@@ -16,14 +16,17 @@ Os requisitos funcionais, com as regras e telas que os atendem, são:
 - RF4: desligar cargas antes da atuação do disjuntor geral e religá-las em
   seguida (R3, Cargas).
 - RF5: permitir o controle manual de cada carga, com prioridade sobre a
-  automação até o fim do dia (árbitro, Cargas).
+  automação até o fim do dia, exceto pela R3 e pela R8 (árbitro, Cargas).
 - RF6: detectar falhas e quedas de geração do sistema solar (R5, Alertas).
-- RF7: orientar o uso do ar-condicionado, sem controlá-lo (R6 e R7).
+- RF7: orientar o uso do ar-condicionado, sem controlá-lo (R6 e R7,
+  Segurança e saúde).
 - RF8: em caso de detecção de gás, acionar o alarme, notificar moradores e
-  contato de emergência e suspender acionamentos (R8).
-- RF9: monitorar a concentração de CO~2~ e orientar a renovação do ar (R9).
+  contato de emergência e suspender acionamentos (R8, Segurança e saúde,
+  Alertas).
+- RF9: monitorar a concentração de CO~2~ e orientar a renovação do ar (R9,
+  Segurança e saúde).
 - RF10: monitorar a saúde dos dispositivos e a tensão de fornecimento (R10 a
-  R12).
+  R12, Segurança e saúde).
 - RF11: gerir o ciclo de vida dos alertas: abertura, notificação, repetição,
   reconhecimento e encerramento (Alertas).
 - RF12: armazenar o histórico com retenção definida e disponibilizar análise
@@ -62,14 +65,14 @@ ambiente de testes.
 
 ## Rastreabilidade
 
-A Tabela 6 relaciona cada problema da Seção 2.2 aos requisitos, às regras,
+A Tabela 7 relaciona cada problema da Seção 2.2 aos requisitos, às regras,
 às telas e às falhas tratadas no Capítulo 7.
 
 : Rastreabilidade do problema à solução.
 
-| Problema (Seção 2.2) | Requisitos | Regras | Telas | Falhas tratadas (Tabela 5) |
+| Problema (Seção 2.2) | Requisitos | Regras | Telas | Falhas tratadas (Tabela 6) |
 |------------------------------|------------|----------------|-------------------------|----------------------------------------|
-| 1. Ausência de visibilidade | RF1, RF7, RF12 | R6, R7 | Visão geral | dados nulos, corrompidos, incoerentes e duplicados |
+| 1. Ausência de visibilidade | RF1, RF7, RF12 | R6, R7 | Visão geral, Segurança e saúde | dados nulos, corrompidos, incoerentes e duplicados |
 | 2. Aproveitamento insuficiente da geração | RF3, RF4, RF5 | R1 a R3 | Cargas | atuador sem resposta, *hub* desligado com carga ligada |
 | 3. Falhas solares não detectadas | RF6, RF10 | R5, R10 | Alertas | sensor offline, falta de energia |
 | 4. Imprevisibilidade da fatura | RF2 | R4 | Visão geral | contador de energia decrescente |
