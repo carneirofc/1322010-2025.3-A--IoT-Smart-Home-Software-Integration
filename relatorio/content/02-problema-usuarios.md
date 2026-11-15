@@ -9,7 +9,7 @@ energia injetada gera créditos que abatem o consumo [@brasil2022lei14300]. As
 maiores cargas são o chuveiro elétrico e o ar-condicionado do quarto; há
 também bomba de filtragem da piscina, lavadora de roupas, iluminação externa
 e fogão a gás. A residência dispõe de rede Wi-Fi e de um pequeno computador
-permanentemente ligado, doravante denominado *hub*.
+sempre ligado, que atua como concentrador local (*hub*) do sistema.
 
 ## Problema
 
