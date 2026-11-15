@@ -22,7 +22,7 @@ export default function SafetyPage() {
         <AirPanel air={scenario.air} alert={alertFor("R9")} />
         <AirConditionerPanel ac={scenario.airConditioner} alert={alertFor("R7")} />
       </div>
-      <div className="mt-4 grid grid-cols-[1fr_1.75fr] items-start gap-4 max-sm:grid-cols-1">
+      <div className="mt-4 grid grid-cols-[1fr_1.75fr] gap-4 max-sm:grid-cols-1">
         <SupplyPanel supply={scenario.supply} />
         <DevicesPanel health={scenario.deviceHealth} />
       </div>
