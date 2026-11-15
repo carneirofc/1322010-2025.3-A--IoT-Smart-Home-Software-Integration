@@ -1,9 +1,9 @@
 /*
- * @carneirofc/ui in our identity.
+ * @carneirofc/ui in our light derivative of its own language.
  *
- * The library's own stylesheet (its theme and remote fonts) is never
+ * The library's stylesheet (its dark-first theme and remote fonts) is never
  * imported. Its components read the custom properties and helper classes
- * below; every value comes from the tokens in globals.css.
+ * below, re-expressed from the tokens in globals.css.
  */
 
 /* Only the components the panel renders are scanned for utilities. */
@@ -12,65 +12,77 @@
 @source "../../node_modules/@carneirofc/ui/dist/Dialog.js";
 @source "../../node_modules/@carneirofc/ui/dist/Collapsible.js";
 @source "../../node_modules/@carneirofc/ui/dist/CollapsiblePanel.js";
+@source "../../node_modules/@carneirofc/ui/dist/CyberPanels.js";
 @source "../../node_modules/@carneirofc/ui/dist/EmptyState.js";
 @source "../../node_modules/@carneirofc/ui/dist/InfoChip.js";
 @source "../../node_modules/@carneirofc/ui/dist/CopyButton.js";
 @source "../../node_modules/@carneirofc/ui/dist/Icons.js";
 
 :root {
-  /* Surfaces */
-  --ui-bg: var(--color-papel);
-  --ui-bg-card: var(--color-papel);
-  --ui-bg-soft: #e9edeb;
-  --ui-bg-muted: var(--color-placa);
-  --ui-bg-active: var(--color-modulo-tint);
-  --surface-0: var(--color-papel);
-  --surface-1: var(--color-papel);
+  /* Page and surfaces (library light set, opaque enough for print) */
+  --bg-0: var(--color-nevoa);
+  --surface-0: color-mix(in oklab, #ffffff 90%, #dff4ff 10%);
+  --surface-1: color-mix(in oklab, #ffffff 80%, #d7e9ff 20%);
+  --surface-2: color-mix(in oklab, #ffffff 82%, #ebddff 18%);
   --panel-white: var(--color-papel);
+  --panel-border: var(--color-borda);
+  --panel-border-muted: #b3b9ea;
+  --panel-border-strong: color-mix(in oklab, #38a0ff 58%, #f46fff 42%);
+  --scanline: rgb(20 32 57 / 0.05);
 
   /* Ink */
-  --ui-ink: var(--color-grafite);
-  --ui-ink-strong: var(--color-grafite);
-  --ui-ink-title: var(--color-grafite);
-  --ui-ink-accent: var(--color-grafite);
-  --ui-ink-secondary: #3b4441;
-  --ui-ink-subtle: var(--color-fio);
-  --ui-ink-muted: var(--color-fio);
-  --ui-ink-hover: var(--color-grafite);
-  --ui-ink-highlight: var(--color-grafite);
-  /* Ink on the accent (Módulo blue) button. */
-  --text-0: var(--color-white);
+  --text-0: var(--color-tinta);
+  --text-1: var(--color-tinta-2);
+  --text-2: var(--color-tinta-suave);
+  --ui-ink: var(--color-tinta);
+  --ui-ink-strong: var(--color-tinta);
+  --ui-ink-title: var(--color-tinta);
+  --ui-ink-accent: var(--color-tinta-2);
+  --ui-ink-secondary: var(--color-tinta-2);
+  --ui-ink-subtle: var(--color-tinta-suave);
+  --ui-ink-muted: var(--color-tinta-suave);
+  --ui-ink-hover: var(--color-tinta);
+  --ui-ink-highlight: var(--color-tinta);
+
+  /* Component backgrounds */
+  --ui-bg: var(--color-papel);
+  --ui-bg-card: #fcfbfe;
+  --ui-bg-soft: #f0ebf8;
+  --ui-bg-muted: #f4effb;
+  --ui-bg-active: #e8def7;
+  --ui-bg-info: var(--color-ciano-tint);
 
   /* Lines */
-  --ui-border: var(--color-linha);
-  --ui-border-strong: var(--color-grafite);
+  --ui-border: #ddd5ea;
+  --ui-border-strong: #c6bce0;
   --ui-border-soft: var(--color-linha);
-  --ui-border-faint: var(--color-linha-fraca);
-  --ui-border-muted: var(--color-linha-forte);
-  --ui-border-modal: var(--color-grafite);
-  --ui-border-active: var(--color-grafite);
-  --ui-border-focus: var(--color-modulo);
-  --ui-ring-focus: var(--color-modulo);
-  --panel-border: var(--color-linha);
-  --panel-border-muted: var(--color-linha-forte);
-  --panel-border-strong: var(--color-modulo-escuro);
+  --ui-border-faint: #e8e1f2;
+  --ui-border-muted: #d5cce8;
+  --ui-border-modal: var(--color-borda);
+  --ui-border-active: #9b87c0;
+  --ui-border-focus: var(--color-ciano-ink);
+  --ui-ring-focus: color-mix(in oklab, var(--color-ciano) 45%, white);
 
-  /* Accent: the photovoltaic-module blue */
-  --accent-cyan: var(--color-modulo);
-  --accent-pink: var(--color-modulo);
+  /* Accents */
+  --accent-cyan: var(--color-ciano);
+  --accent-pink: var(--color-rosa);
+  --accent-lime: var(--color-lima);
+  --accent-warn: var(--color-ambar);
 
-  /* Overlay and the dialog's printed-label shadow */
-  --ui-overlay-strong: rgb(28 35 33 / 0.55);
-  --ui-overlay-soft: rgb(28 35 33 / 0.4);
-  --ui-shadow-strong: 6px 6px 0 rgb(28 35 33 / 0.22);
+  /* Overlay and depth */
+  --ui-overlay-strong: rgb(23 19 34 / 0.55);
+  --ui-overlay-soft: rgb(23 19 34 / 0.45);
+  --ui-shadow-strong: 0 30px 80px -40px rgb(27 20 41 / 0.6);
+  --shadow-lg: var(--shadow-panel);
+  --shadow-sm: var(--shadow-sub);
 
-  /* Type scale the components use (13 px floor) */
-  --ui-font-2xs: 14px;
-  --ui-font-xs: 15px;
-  --ui-font-sm: 15px;
-  --ui-font-md: 16px;
-  --ui-font-lg: 22px;
-  --ui-font-xl: 28px;
+  /* Type scale the components use, lifted to a 13 px floor */
+  --ui-font-2xs: 13px;
+  --ui-font-xs: 14px;
+  --ui-font-sm: 14px;
+  --ui-font-md: 15px;
+  --ui-font-lg: 20px;
+  --ui-font-xl: 26px;
 }
 
 @theme inline {
@@ -86,6 +98,7 @@
   --color-ui-bg-muted: var(--ui-bg-muted);
   --color-ui-bg-active: var(--ui-bg-active);
   --color-ui-bg-card: var(--ui-bg-card);
+  --color-ui-bg-info: var(--ui-bg-info);
   --color-ui-overlay-soft: var(--ui-overlay-soft);
   --color-ui-overlay-strong: var(--ui-overlay-strong);
   --color-ui-faint: var(--ui-border-faint);
@@ -99,7 +112,7 @@
 }
 @utility text-ui-xs {
   font-size: var(--ui-font-xs);
-  line-height: 1.35;
+  line-height: 1.4;
 }
 @utility text-ui-sm {
   font-size: var(--ui-font-sm);
@@ -107,7 +120,7 @@
 }
 @utility text-ui-lg {
   font-size: var(--ui-font-lg);
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 /* Border helpers */
@@ -131,27 +144,71 @@
 }
 
 @layer components {
-  /* InfoChip: a breaker label, square and ruled. */
-  .cyber-chip {
-    border: 1px solid var(--color-grafite);
-    background: var(--color-papel);
-    color: var(--color-grafite);
+  /*
+   * CyberPanel: the one loud panel per screen. Gradient-tinted surface,
+   * cyan-to-pink edge, the long low shadow and a faint scanline.
+   */
+  .cyber-panel {
+    position: relative;
+    border: 1px solid transparent;
+    background:
+      linear-gradient(to bottom, transparent 0 2px, var(--scanline) 2px 3px) 0 0 / 100% 3px
+      padding-box,
+      linear-gradient(
+        152deg,
+        color-mix(in oklab, var(--surface-0) 90%, var(--accent-cyan) 10%) 0%,
+        color-mix(in oklab, var(--surface-1) 94%, var(--accent-pink) 6%) 55%,
+        color-mix(in oklab, var(--surface-2) 94%, var(--accent-lime) 6%) 100%
+      )
+      padding-box,
+      linear-gradient(
+        120deg,
+        color-mix(in oklab, var(--accent-cyan) 70%, white),
+        color-mix(in oklab, var(--accent-pink) 60%, white)
+      )
+      border-box;
+    box-shadow:
+      var(--shadow-lg),
+      inset 0 1px 0 rgb(255 255 255 / 0.8);
+    color: var(--text-0);
   }
 
-  /* OutlineButton "accent": the one filled button, Módulo blue. */
+  /* CyberSubpanel: a quieter panel with the plain tinted border. */
+  .cyber-subpanel {
+    border: 1px solid var(--panel-border);
+    background: color-mix(in oklab, var(--surface-0) 92%, transparent);
+    color: var(--text-0);
+  }
+
+  /* InfoChip: a small ruled label in the panel border colour. */
+  .cyber-chip {
+    border: 1px solid var(--panel-border-muted);
+    background: var(--surface-1);
+    color: var(--text-1);
+  }
+
+  /* OutlineButton "accent": the cyan-to-pink filled button, ink stays dark. */
   .cyber-button {
-    border: 1px solid var(--color-modulo);
-    background: var(--color-modulo);
-    color: var(--color-white);
+    border: 1px solid var(--panel-border-strong);
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--accent-cyan) 30%, white) 0%,
+      color-mix(in oklab, var(--accent-pink) 28%, white) 100%
+    );
+    color: var(--text-0);
   }
   .cyber-button:hover:not(:disabled) {
-    background: var(--color-modulo-escuro);
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--accent-cyan) 42%, white) 0%,
+      color-mix(in oklab, var(--accent-pink) 40%, white) 100%
+    );
   }
 
   .cyber-button-ghost {
-    border: 1px solid var(--color-linha);
+    border: 1px solid var(--panel-border);
     background: transparent;
-    color: var(--color-grafite);
+    color: var(--text-1);
   }
 }
 
@@ -164,7 +221,7 @@
 @keyframes ui-dialog-in {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(6px) scale(0.98);
   }
 }
 @keyframes ui-collapsible-down {
@@ -188,16 +245,16 @@
   animation: ui-overlay-in 140ms ease-out;
 }
 .ui-anim-dialog[data-state="open"] {
-  animation: ui-dialog-in 160ms ease-out;
+  animation: ui-dialog-in 180ms cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 .ui-anim-collapsible {
   overflow: hidden;
 }
 .ui-anim-collapsible[data-state="open"] {
-  animation: ui-collapsible-down 200ms ease-out;
+  animation: ui-collapsible-down 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 .ui-anim-collapsible[data-state="closed"] {
-  animation: ui-collapsible-up 160ms ease-in;
+  animation: ui-collapsible-up 180ms ease-in;
 }
 
 @media (prefers-reduced-motion: reduce) {

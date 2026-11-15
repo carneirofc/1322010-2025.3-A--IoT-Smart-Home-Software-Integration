@@ -3,12 +3,12 @@ import type { ReactNode } from "react";
 import { BreakerTabs, type TabLink } from "@/components/shell/BreakerTabs";
 import { Header } from "@/components/shell/Header";
 import { openAlertCount, scenario } from "@/mocks/scenario";
-import "@fontsource/atkinson-hyperlegible-next/400.css";
-import "@fontsource/atkinson-hyperlegible-next/600.css";
-import "@fontsource/atkinson-hyperlegible-next/700.css";
-import "@fontsource/barlow-condensed/500.css";
-import "@fontsource/barlow-condensed/600.css";
-import "@fontsource/barlow-condensed/700.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import "@fontsource/ibm-plex-mono/600.css";
+import "@fontsource/sora/400.css";
+import "@fontsource/sora/600.css";
+import "@fontsource/sora/700.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

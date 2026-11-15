@@ -2,52 +2,63 @@
 @import "./ui-library.css";
 
 /*
- * Tokens of the "quadro de distribuição" identity (see DESIGN.md), for a
- * 1024 px wide viewport printed at ~16 cm on white paper.
+ * Light, print-first derivative of the deedlit.dev.ui language (see
+ * DESIGN.md), for a 1024 px wide viewport printed at ~16 cm on white paper.
  */
 @theme {
-  --font-sans: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Arial, sans-serif;
-  --font-label: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --font-sans: "Sora", "Segoe UI", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
 
   /* Font sizes without a paired line height: text inherits the body leading. */
   --text-*: initial;
   --text-caption: 13px;
   --text-small: 14px;
-  --text-body: 16px;
-  --text-heading: 20px;
-  --text-title: 28px;
-  --text-display: 40px;
-  --text-reading: 64px;
+  --text-body: 15px;
+  --text-heading: 18px;
+  --text-title: 24px;
+  --text-display: 34px;
+  --text-reading: 56px;
 
   --color-*: initial;
   --color-transparent: transparent;
   --color-white: #ffffff;
-  --color-placa: #f2f4f3;
+  --color-nevoa: #f3f7fd;
   --color-papel: #ffffff;
-  --color-grafite: #1c2321;
-  --color-fio: #56605c;
-  --color-linha: #c9cfcc;
-  --color-linha-fraca: #dde2e0;
-  --color-linha-forte: #8e9893;
-  --color-modulo: #1f4e8c;
-  --color-modulo-escuro: #163a69;
-  --color-modulo-tint: #e4ebf5;
-  --color-solar-area: rgb(31 78 140 / 0.14);
-  --color-marrom: #8a5a12;
+  --color-tinta: #241f31;
+  --color-tinta-2: #4f4565;
+  --color-tinta-suave: #5f5772;
+  --color-linha: #e1d9ef;
+  --color-borda: #c9cdf5;
+  --color-violeta: #4d4262;
 
-  /* Bandeira: state only, always next to its word. */
-  --color-verde: #1e7a46;
-  --color-verde-ink: #145232;
-  --color-verde-tint: #e3f1e8;
-  --color-amarela: #e3ae00;
-  --color-amarela-ink: #5a4300;
-  --color-amarela-tint: #fff3c4;
-  --color-laranja: #b85400;
-  --color-laranja-ink: #8a3f00;
-  --color-laranja-tint: #fcebdd;
-  --color-vermelha: #b8261e;
-  --color-vermelha-ink: #8e1b15;
-  --color-vermelha-tint: #fbe6e4;
+  /* Accents: each pairs with an ink for text and a tint for grounds. */
+  --color-ciano: #00b7ff;
+  --color-ciano-ink: #00648c;
+  --color-ciano-tint: #ddf3ff;
+  --color-rosa: #ff4ad8;
+  --color-rosa-ink: #a3127f;
+  --color-rosa-tint: #ffe3f7;
+  --color-lima: #67f8bf;
+  --color-lima-ink: #0b6b47;
+  --color-lima-tint: #ddfbef;
+  --color-ambar: #ffbf4a;
+  --color-ambar-ink: #7a4b00;
+  --color-ambar-tint: #fff1d4;
+  --color-laranja: #ff8a3d;
+  --color-laranja-ink: #9c3d00;
+  --color-laranja-tint: #ffe6d6;
+  --color-vermelho: #f0445a;
+  --color-vermelho-ink: #b0132e;
+  --color-vermelho-tint: #ffe1e5;
+  --color-solar-area: rgb(0 183 255 / 0.16);
+
+  /* Library radius and shadow scales. */
+  --radius-chip: 6px;
+  --radius-control: 10px;
+  --radius-sub: 18px;
+  --radius-panel: 28px;
+  --shadow-panel: 0 28px 78px -52px rgb(20 30 54 / 0.45);
+  --shadow-sub: 0 10px 28px -20px rgb(20 30 54 / 0.32);
 
   --container-page: 1024px;
 
@@ -102,20 +113,32 @@
 @layer base {
   html {
     font-size: var(--text-body);
-    background: var(--color-placa);
+    background: var(--color-nevoa);
   }
 
   body {
+    min-height: 100vh;
     font-family: var(--font-sans);
     font-size: var(--text-body);
-    line-height: 1.45;
-    color: var(--color-grafite);
-    background: var(--color-placa);
+    line-height: 1.5;
+    letter-spacing: 0.005em;
+    color: var(--color-tinta);
+    /* Two faint accent glows over the wash, as on deedlit.dev, cut for print. */
+    background:
+      radial-gradient(900px 520px at -6% -14%, rgb(0 183 255 / 0.13), transparent 70%),
+      radial-gradient(820px 480px at 106% -16%, rgb(255 74 216 / 0.1), transparent 70%),
+      var(--color-nevoa);
     -webkit-font-smoothing: antialiased;
   }
 
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+  }
+
   a {
-    color: var(--color-modulo);
+    color: var(--color-rosa-ink);
   }
 
   button:not(:disabled) {
@@ -123,7 +146,11 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-modulo);
+    outline: 2px solid var(--color-ciano-ink);
     outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-ciano) 40%, white);
   }
 }
