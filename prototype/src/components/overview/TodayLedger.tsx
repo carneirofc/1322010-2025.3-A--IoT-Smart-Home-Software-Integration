@@ -1,6 +1,7 @@
 import { formatDecimal, formatNumber } from "@/lib/format";
 import type { DayTotals } from "@/mocks/types";
 import { Panel } from "../ui/Panel";
+import { Compact } from "../ui/Reading";
 
 /** Today's totals as line items with dotted leaders. */
 export function TodayLedger({ today }: { today: DayTotals }) {
@@ -21,7 +22,7 @@ export function TodayLedger({ today }: { today: DayTotals }) {
               className="min-w-4 flex-1 translate-y-[-4px] border-borda border-b-2 border-dotted"
             />
             <dd className="font-medium font-mono">
-              {item.value}{" "}
+              <Compact value={item.value} />{" "}
               <span className="font-normal text-small text-tinta-suave">{item.unit}</span>
             </dd>
           </div>
