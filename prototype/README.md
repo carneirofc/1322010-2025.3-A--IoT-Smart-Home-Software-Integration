@@ -75,7 +75,8 @@ follow `<type>_<location>_<nn>`, as in the report.
 
 Interaction is local state only: the Alertas filters (Todos, Abertos,
 Reconhecidos, Encerrados) filter the list and "Reconhecer" marks an open
-alert as acknowledged until the page reloads. "Linha do tempo" opens the
+alert as acknowledged until the page reloads; the count on the Alertas tab
+follows it. "Linha do tempo" opens the
 alert's record in a dialog, and "Ver comandos" links to Cargas. Relay and
 alarm actions ask for confirmation in a dialog; confirming only closes it.
 "Copiar id" copies the late device's id. Nothing reaches a backend.
