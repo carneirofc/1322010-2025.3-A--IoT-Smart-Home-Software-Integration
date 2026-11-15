@@ -2,7 +2,7 @@
   "$schema": "https://biomejs.dev/schemas/2.6.7/schema.json",
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!.next", "!out", "!next-env.d.ts"]
+    "includes": ["**", "!.next", "!out", "!next-env.d.ts", "!**/*.md"]
   },
   "formatter": {
     "enabled": true,
