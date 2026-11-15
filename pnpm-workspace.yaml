@@ -1,0 +1,7 @@
+packages:
+  - prototype
+
+# Dependency build scripts reviewed explicitly; everything else stays blocked.
+allowBuilds:
+  # Downloads its own Chrome; the report scripts use the system Chromium.
+  puppeteer: false

@@ -14,3 +14,9 @@ __pycache__/
 .ruff_cache/
 .idea/
 .vscode/
+
+# Prototype (Next.js) build output
+prototype/.next/
+prototype/out/
+prototype/next-env.d.ts
+*.tsbuildinfo

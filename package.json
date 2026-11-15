@@ -7,6 +7,8 @@
     "node": ">=24"
   },
   "scripts": {
+    "dev": "pnpm --filter prototype dev",
+    "build:prototype": "pnpm --filter prototype build",
     "diagrams": "relatorio/scripts/diagrams.sh",
     "screens": "node relatorio/scripts/screens.mjs",
     "report": "pnpm diagrams && pnpm screens && make -C relatorio"
