@@ -197,8 +197,8 @@ export interface Alert {
   title: string;
   description: string;
   state: AlertState;
-  /** Secondary action of a closed alert. */
-  followUp?: string;
+  /** Secondary action of a closed alert: a link when `href` is set, else the alert's detail. */
+  followUp?: { label: string; href?: string };
 }
 
 // ---------- Whole scenario ----------

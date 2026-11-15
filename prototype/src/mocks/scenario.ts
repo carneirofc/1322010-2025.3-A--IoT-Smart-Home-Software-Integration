@@ -82,7 +82,7 @@ const alerts: readonly Alert[] = [
     title: "46 A de 50 A às 08:07",
     description: "Lavadora desligada para proteger o disjuntor geral.",
     state: { kind: "closed", at: "08:17", note: "lavadora religada" },
-    followUp: "Ver comandos",
+    followUp: { label: "Ver comandos", href: "/cargas/" },
   },
   {
     id: "alert-r8-kitchen",
@@ -95,7 +95,7 @@ const alerts: readonly Alert[] = [
     description:
       "Alarme da casa tocou em 1 s; push a todos os moradores e ao contato de emergência.",
     state: { kind: "closed", at: "19:31", note: "reconhecido por Ana" },
-    followUp: "Linha do tempo",
+    followUp: { label: "Linha do tempo" },
   },
 ];
 
