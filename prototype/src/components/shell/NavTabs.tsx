@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAlerts } from "../alerts/AlertsState";
 
 export interface TabLink {
   href: string;
   label: string;
-  /** Count plus the words shown after it ("2 abertos"). */
-  badge?: { count: number; label: string };
+  /** "openAlerts": the count of open alerts, following local acknowledgements. */
+  badge?: "openAlerts";
 }
 
 const normalise = (path: string): string => (path.length > 1 ? path.replace(/\/+$/u, "") : path);
@@ -19,6 +20,7 @@ const IDLE = "border-borda bg-papel/80 text-tinta-2 hover:bg-ui-bg-soft hover:te
 /** The four screens, styled as the library's sidebar items laid in a row. */
 export function NavTabs({ tabs }: { tabs: readonly TabLink[] }) {
   const current = normalise(usePathname());
+  const openCount = useAlerts().alerts.filter((alert) => alert.state.kind === "open").length;
   return (
     <nav
       aria-label="Telas do painel"
@@ -36,9 +38,10 @@ export function NavTabs({ tabs }: { tabs: readonly TabLink[] }) {
             }`}
           >
             {tab.label}
-            {tab.badge && tab.badge.count > 0 ? (
+            {tab.badge === "openAlerts" && openCount > 0 ? (
               <span className="rounded-chip bg-laranja-tint px-1.5 font-semibold text-caption text-laranja-ink">
-                <span className="font-mono">{tab.badge.count}</span> {tab.badge.label}
+                <span className="font-mono">{openCount}</span>{" "}
+                {openCount === 1 ? "aberto" : "abertos"}
               </span>
             ) : null}
           </Link>

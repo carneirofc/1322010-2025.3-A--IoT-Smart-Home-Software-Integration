@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { AlertsProvider } from "@/components/alerts/AlertsState";
 import { Header } from "@/components/shell/Header";
 import { NavTabs, type TabLink } from "@/components/shell/NavTabs";
-import { openAlertCount, scenario } from "@/mocks/scenario";
+import { scenario } from "@/mocks/scenario";
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "@fontsource/ibm-plex-mono/600.css";
@@ -23,7 +24,7 @@ const tabs: readonly TabLink[] = [
   {
     href: "/alertas/",
     label: "Alertas",
-    badge: { count: openAlertCount, label: openAlertCount === 1 ? "aberto" : "abertos" },
+    badge: "openAlerts",
   },
 ];
 
@@ -31,15 +32,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
       <body>
-        <header className="relative border-borda border-b bg-papel/70 backdrop-blur-sm">
-          <Header hub={scenario.hub} now={scenario.now} />
-          <NavTabs tabs={tabs} />
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 -bottom-px h-px bg-[linear-gradient(90deg,transparent,var(--color-ciano)_20%,var(--color-rosa)_80%,transparent)]"
-          />
-        </header>
-        {children}
+        <AlertsProvider initialAlerts={scenario.alerts}>
+          <header className="relative border-borda border-b bg-papel/70 backdrop-blur-sm">
+            <Header hub={scenario.hub} now={scenario.now} />
+            <NavTabs tabs={tabs} />
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 -bottom-px h-px bg-[linear-gradient(90deg,transparent,var(--color-ciano)_20%,var(--color-rosa)_80%,transparent)]"
+            />
+          </header>
+          {children}
+        </AlertsProvider>
       </body>
     </html>
   );

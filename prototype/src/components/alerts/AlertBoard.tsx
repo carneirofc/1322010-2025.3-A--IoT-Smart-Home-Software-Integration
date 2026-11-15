@@ -4,6 +4,7 @@ import { CyberPanel, EmptyState, SegmentedControl } from "@carneirofc/ui";
 import { useState } from "react";
 import type { Alert, AlertState } from "@/mocks/types";
 import { AlertRow } from "./AlertRow";
+import { useAlerts } from "./AlertsState";
 
 type Filter = "all" | AlertState["kind"];
 
@@ -64,18 +65,10 @@ function AlertGroup({
   );
 }
 
-function acknowledge(alert: Alert): Alert {
-  if (alert.state.kind !== "open") return alert;
-  return { ...alert, state: { kind: "acknowledged", since: alert.state.since } };
-}
-
 /** Alert list with local-only filters and acknowledgement (no backend). */
-export function AlertBoard({ initialAlerts }: { initialAlerts: readonly Alert[] }) {
-  const [alerts, setAlerts] = useState(initialAlerts);
+export function AlertBoard() {
+  const { alerts, acknowledge: onAcknowledge } = useAlerts();
   const [filter, setFilter] = useState<Filter>("all");
-
-  const onAcknowledge = (id: string) =>
-    setAlerts((current) => current.map((alert) => (alert.id === id ? acknowledge(alert) : alert)));
 
   const groups = (["open", "acknowledged", "closed"] as const)
     .filter((kind) => filter === "all" || filter === kind)

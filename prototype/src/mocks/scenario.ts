@@ -190,6 +190,3 @@ export const scenario: Scenario = {
   },
   alerts,
 };
-
-/** Alerts still waiting for someone (badge on the Alertas tab). */
-export const openAlertCount = alerts.filter((alert) => alert.state.kind === "open").length;
