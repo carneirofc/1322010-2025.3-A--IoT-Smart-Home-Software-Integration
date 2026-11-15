@@ -2,8 +2,8 @@
 
 ## Cenário
 
-Considera-se uma residência unifamiliar com três a quatro moradores,
-alimentada em 220/127 V. A casa possui geração solar fotovoltaica conectada à
+Considera-se uma residência familiar alimentada em 220/127 V. A casa possui
+geração solar fotovoltaica conectada à
 rede e participa do Sistema de Compensação de Energia Elétrica, no qual a
 energia injetada gera créditos que abatem o consumo [@brasil2022lei14300]. As
 maiores cargas são o chuveiro elétrico e o ar-condicionado do quarto; há
