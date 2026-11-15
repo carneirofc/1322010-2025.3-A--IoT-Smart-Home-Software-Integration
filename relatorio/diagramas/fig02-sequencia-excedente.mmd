@@ -11,11 +11,11 @@ sequenceDiagram
   B->>W: entrega (QoS 1)
   Note over W: valida e<br/>descarta duplicata
   W->>D: grava leitura
-  Note over W: R1: sobra ≥ 950 W<br/>há 5 min
+  Note over W: R1: excedente ≥ 950 W<br/>há 5 min
   W->>D: comando pendente
   W->>B: cmd · ligar · cmd_id
   B->>R: comando
   R->>B: state · ligado · cmd_id
   B->>W: confirmação
   W->>D: comando confirmado
-  W-->>U: "Bomba ligada (sobra)"
+  W-->>U: "Bomba ligada (excedente)"

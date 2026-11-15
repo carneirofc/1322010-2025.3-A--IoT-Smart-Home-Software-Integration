@@ -34,7 +34,7 @@ armazenamento e encaminhamento (*store-and-forward*)
 [@ufjf2026cap2, p. 6; @ufjf2026cap5, p. 17], detalhada na Seção 7.3.
 
 O inversor solar é a única exceção, por não suportar MQTT. Um gateway local
-consulta o inversor a cada 30 s e republica as leituras no mesmo formato dos
+consulta o inversor a cada 30 s e republica as leituras no mesmo formato dos
 demais dispositivos, sem depender da plataforma em nuvem do fabricante,
 desempenhando a função de conversão de protocolos atribuída ao gateway
 [@ufjf2026cap2, p. 17].
@@ -80,7 +80,8 @@ na repetição da ação.
 Outros recursos do MQTT complementam o projeto [@ufjf2026cap2, p. 11]. Na
 conexão, cada dispositivo registra uma mensagem de desconexão (*Last Will*),
 publicada pelo broker caso a conexão seja interrompida sem encerramento
-regular, o que permite detectar em segundos um dispositivo sem comunicação.
+regular; com intervalo de *keep-alive* de 10 s, o broker detecta a perda em
+cerca de 15 s (1,5 vez o intervalo).
 O tópico `state` é retido, de forma que todo novo assinante recebe
 imediatamente o último estado de cada atuador. Os comandos, por sua vez, não
 são retidos e possuem prazo de validade (*message expiry*, do MQTT 5), o que
@@ -100,7 +101,7 @@ medidor:
 {
   "device": "energy_meter_panel_01", "ts": "2026-11-15T15:20:10Z", "seq": 48213,
   "uptime_s": 482130, "rssi_dbm": -58, "buffered": false,
-  "voltage_v": {"a": 126.4, "b": 127.1}, "current_a": {"a": 3.1, "b": 2.4},
+  "voltage_v": {"a": 126.4, "b": 127.1}, "current_a": {"a": 6.2, "b": 5.6},
   "grid_power_w": -1450.0, "power_factor": 0.97, "frequency_hz": 60.0,
   "import_kwh": 5231.42, "export_kwh": 3120.77,
   "shower_power_w": 0.0, "ac_power_w": 0.0
@@ -117,7 +118,7 @@ o middleware atualiza o último estado conhecido do dispositivo, o gêmeo
 digital definido no Capítulo 3, e só então avalia as regras associadas a ele
 [@ufjf2026cap5, p. 6–7].
 
-O motor de regras é executado a cada leitura e, adicionalmente, a cada 10 s,
+O motor de regras é executado a cada leitura e, adicionalmente, a cada 10 s,
 para as regras que dependem de duração ("há 5 minutos"). O motor não realiza
 operações de entrada e saída: recebe fatos e devolve decisões, o que permite
 testá-lo sem broker e sem banco de dados. O módulo de despacho publica cada
@@ -138,7 +139,7 @@ Fonte: Elaborado pelo autor (2026).
 ## Banco de dados
 
 O banco de dados adotado é o PostgreSQL com a extensão TimescaleDB. A maior
-parte das consultas do sistema é temporal ("consumo das últimas 24 h"), o
+parte das consultas do sistema é temporal ("consumo das últimas 24 h"), o
 que corresponde ao padrão de escrita intensa e leitura por janelas de tempo
 para o qual os bancos de séries temporais são projetados
 [@ufjf2026cap4, p. 9–10]. As leituras são armazenadas em tabelas
@@ -164,14 +165,18 @@ O painel web (Capítulo 6) é a interface dos moradores e funciona no celular
 como aplicativo instalável (PWA). O Grafana oferece ao instalador a análise
 do histórico, com acesso ao banco por um usuário somente de leitura. As
 notificações *push* entregam os alertas no celular mesmo com o painel
-fechado, e os alertas críticos de segurança são enviados também ao contato
-de emergência.
+fechado. Como a entrega do *push* não é garantida e o contato de emergência
+não utiliza o painel, os alertas críticos seguem também por mensagem de
+texto (SMS), que alcança o contato de emergência sem aplicativo instalado.
 
 Todos os serviços do *hub* são executados em contêineres, iniciados em
-conjunto por um arquivo *compose*, e o *hub* é alimentado por um nobreak,
-para que o registro continue durante uma falta de energia. Sem internet, o
+conjunto por um arquivo *compose*, e o *hub* e o roteador são alimentados
+por um nobreak, para que o registro e a rede local continuem durante uma
+falta de energia. Sem internet, o
 sistema mantém medição, armazenamento, regras e painel na rede local; apenas
 as notificações aguardam na fila, e o acesso externo, realizado por VPN,
 fica indisponível. A permanência dos dados na residência protege também a
 privacidade, uma vez que o perfil de consumo revela a rotina da família e
-constitui dado pessoal [@brasil2018lgpd].
+constitui dado pessoal [@brasil2018lgpd]. Para o uso pela própria família, a
+LGPD não se aplica (art. 4º, I); ela passa a reger o sistema se ele for
+oferecido como serviço a terceiros.
