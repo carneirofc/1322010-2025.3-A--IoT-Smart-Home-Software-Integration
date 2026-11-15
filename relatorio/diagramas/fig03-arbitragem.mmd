@@ -2,12 +2,12 @@
 flowchart TB
   IN["Regras avaliadas a cada 10 s<br/>propõem ações por carga"]
   Q1{"Gás<br/>detectado?"}
-  Q2{"Carga em<br/>modo manual?"}
-  Q3{"Proteção contra<br/>sobrecarga ativa?"}
-  P4["<b>4 · Economia</b><br/>R1 e R2 ligam e desligam<br/>(mínimo 10 min em cada estado)"]
+  Q2{"Proteção contra<br/>sobrecarga ativa?"}
+  Q3{"Carga em<br/>modo manual?"}
   P1["<b>1 · Segurança</b><br/>nenhum relé é acionado (R8)"]
-  P2["<b>2 · Morador</b><br/>automação não mexe<br/>até 23:59"]
-  P3["<b>3 · Proteção</b><br/>R3 desliga;<br/>R1 bloqueada"]
+  P2["<b>2 · Proteção</b><br/>R3 desliga, inclusive<br/>cargas manuais; R1 bloqueada"]
+  P3["<b>3 · Morador</b><br/>automação não mexe<br/>até 23:59"]
+  P4["<b>4 · Economia</b><br/>R1 e R2 ligam e desligam<br/>(mínimo 10 min em cada estado)"]
 
   IN --> Q1
   Q1 -- "não" --> Q2
