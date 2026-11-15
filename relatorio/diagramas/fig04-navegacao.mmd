@@ -1,0 +1,21 @@
+%%{init: {"flowchart": {"nodeSpacing": 26, "rankSpacing": 34, "wrappingWidth": 210}, "themeVariables": {"fontSize": "16px"}}}%%
+flowchart TB
+  START(["Abrir o painel<br/>(PWA ou navegador)"])
+  PUSH(["Notificação push"])
+
+  subgraph PAINEL["Painel web · abas sempre visíveis"]
+    direction TB
+    VG["Visão geral"]
+    CG["Cargas"]
+    SS["Segurança e saúde"]
+    AL["Alertas"]
+    DET["Detalhe do alerta"]
+  end
+
+  START --> VG
+  VG --> CG & SS & AL
+  AL --> DET
+  PUSH -- "toque" --> DET
+  CG -- "ligar · desligar · modo" --> CMD["Comando confirmado<br/>pelo relé"]
+  DET -- "reconhecer" --> ACK["Push para<br/>de repetir"]
+  SS -. "instalador" .-> GF["Grafana"]
