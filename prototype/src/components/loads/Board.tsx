@@ -10,15 +10,24 @@ import { RuleChip } from "../ui/RuleChip";
 
 const PAST: Record<LoadCommand["action"], string> = { ligar: "Ligada", desligar: "Desligada" };
 
-function lastCommandText(command: LoadCommand) {
-  if (command.source.kind === "resident") {
-    return <>{`${PAST[command.action]} por um morador às ${command.at}`}</>;
-  }
+/** What happened and when on one line, who asked on the next: neither breaks mid phrase. */
+function LastCommand({ command }: { command: LoadCommand }) {
   return (
-    <span className="inline-flex flex-wrap items-center gap-1.5">
-      {PAST[command.action]} pela <RuleChip rule={command.source.rule} />
-      {`(${command.source.reason}) às ${command.at}`}
-    </span>
+    <>
+      <p className="whitespace-nowrap">
+        {PAST[command.action]} às <span className="font-mono">{command.at}</span>
+      </p>
+      <p className="flex flex-wrap items-center gap-x-1.5 text-small text-tinta-suave">
+        {command.source.kind === "rule" ? (
+          <>
+            pela <RuleChip rule={command.source.rule} />
+            <span className="whitespace-nowrap">{command.source.reason}</span>
+          </>
+        ) : (
+          "por um morador"
+        )}
+      </p>
+    </>
   );
 }
 
@@ -39,7 +48,7 @@ function ModeColumn({ load }: { load: Load }) {
         </>
       ) : lastCommand ? (
         <>
-          <p>{lastCommandText(lastCommand)}</p>
+          <LastCommand command={lastCommand} />
           {mode.kind === "manual" ? (
             <p className="text-tinta-suave text-small">a automação volta à meia-noite</p>
           ) : (
