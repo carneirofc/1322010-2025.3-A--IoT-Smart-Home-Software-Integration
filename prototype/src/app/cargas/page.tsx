@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { CommandHistory } from "@/components/CommandHistory";
-import { EntranceBanner } from "@/components/EntranceBanner";
-import { LoadTable } from "@/components/LoadRow";
-import { Page } from "@/components/Page";
+import { Board } from "@/components/loads/Board";
+import { CommandLog } from "@/components/loads/CommandLog";
+import { EntranceMeter } from "@/components/loads/EntranceMeter";
+import { Page } from "@/components/shell/Page";
 import { scenario } from "@/mocks/scenario";
 
 export const metadata: Metadata = { title: "Cargas" };
 
 export default function LoadsPage() {
   return (
-    <Page title="Cargas" updatedAt={scenario.now}>
-      <EntranceBanner entrance={scenario.entrance} />
-      <LoadTable loads={scenario.loads} />
-      <CommandHistory commands={scenario.commands} />
+    <Page title="Cargas">
+      <EntranceMeter entrance={scenario.entrance} />
+      <Board loads={scenario.loads} energy={scenario.energy} />
+      <CommandLog commands={scenario.commands} />
     </Page>
   );
 }
