@@ -6,6 +6,8 @@ const VIEW = { width: 936, height: 200 };
 const PLOT = { left: 40, right: 924, top: 12, bottom: 170 };
 const Y_RANGE = { min: -3, max: 5 };
 const TICK_EVERY_H = 3;
+/** Hour ticks closer than this to either end would collide with the end labels. */
+const TICK_END_GAP_H = 1.5;
 const AXIS_LABEL_Y = 192;
 const Y_LABEL_X = 32;
 const Y_LABEL_DY = 4.5;
@@ -100,7 +102,9 @@ export function DayChart({ series }: { series: DaySeries }) {
   const yTicks = Array.from({ length: Y_RANGE.max - Y_RANGE.min + 1 }, (_, i) => Y_RANGE.min + i);
   const firstTick = Math.ceil(s.first / TICK_EVERY_H) * TICK_EVERY_H;
   const xTicks: number[] = [];
-  for (let hour = firstTick; hour < s.last; hour += TICK_EVERY_H) xTicks.push(hour);
+  for (let hour = firstTick; hour < s.last; hour += TICK_EVERY_H) {
+    if (hour - s.first >= TICK_END_GAP_H && s.last - hour >= TICK_END_GAP_H) xTicks.push(hour);
+  }
 
   return (
     <svg
