@@ -4,13 +4,15 @@
 
 Os dispositivos são caracterizados pela função e pelos dados que fornecem, e
 não pelo modelo comercial; qualquer equipamento capaz de publicar as
-mensagens definidas no Capítulo 4 é compatível. Cada dispositivo recebe um
+mensagens definidas no Capítulo 4 é compatível, desde que, no caso dos
+relés, desligue a carga quando o comando automático expira (Seção 7.3).
+Cada dispositivo recebe um
 identificador no formato `<tipo>_<local>_<nn>`, em que o tipo determina o
 formato das mensagens, o local indica a instalação e `nn` distingue
 dispositivos do mesmo tipo no mesmo local.
 
 O identificador estabelece a associação entre o dado técnico e a entidade de
-negócio descrita na apostila [@ufjf2026cap5, p. 6–8]. Uma leitura de 742 W
+negócio descrita na apostila [@ufjf2026cap5, p. 6–8]. Uma leitura de 742 W
 não tem significado isolado; associada a `relay_pool_01`, corresponde à
 bomba da piscina. O cadastro de cada dispositivo (local, carga controlada,
 limites e último estado conhecido) desempenha o papel de gêmeo digital
@@ -51,49 +53,51 @@ distinguir o valor impossível do valor apenas improvável
 
 A coleta combina dois métodos apresentados na Unidade 2
 [@ufjf2026cap2, p. 3–5]. Grandezas de variação contínua são coletadas
-periodicamente, com intervalo compatível com a dinâmica do fenômeno: 10 s
+periodicamente, com intervalo compatível com a dinâmica do fenômeno: 10 s
 para a energia, pois o acionamento do chuveiro altera a potência da
-residência de forma abrupta, e 60 s para o CO~2~, cuja variação é lenta.
+residência de forma abrupta, e 60 s para o CO~2~, cuja variação é lenta.
 Mudanças de estado, como a detecção de gás ou o acionamento de um relé, são
 transmitidas como eventos. Como um sensor orientado a eventos não transmite
 dados enquanto o estado não muda, uma falha do dispositivo não seria
 percebida; por isso, cada evento é complementado por uma retransmissão
 periódica do estado (*heartbeat*), conforme a abordagem híbrida recomendada
-na apostila [@ufjf2026cap2, p. 5]. Na tabela, a notação "evento + 60 s"
+na apostila [@ufjf2026cap2, p. 5]. Na tabela, a notação "evento + 60 s"
 indica esse comportamento. A potência trocada com a rede é positiva quando a
 residência importa energia e negativa quando a injeta.
 
 : Variáveis medidas, por tipo de dispositivo.
 
-| Campo | Descrição | Unid. | Frequência | Faixa válida |
-|------------------------|---------------------------------------|-------|---------------|-------------------|
-| *`energy_meter_*`* | | | | |
-| `voltage_v[a,b]` | Tensão de cada fase | V | 10 s | 0–160 (0 = sem energia) |
-| `current_a[a,b]` | Corrente de cada fase na entrada | A | 10 s | 0–80 |
-| `grid_power_w` | Potência trocada com a rede | W | 10 s | ±15 000 |
-| `power_factor` | Fator de potência na entrada | – | 10 s | 0–1 |
-| `frequency_hz` | Frequência da rede | Hz | 10 s | 55–65 |
-| `import_kwh`, `export_kwh` | Energia importada e injetada, acumuladas | kWh | 10 s | ≥ 0, não decresce |
-| `shower_power_w` | Potência do chuveiro | W | 10 s | 0–9 000 |
-| `ac_power_w` | Potência do ar-condicionado | W | 10 s | 0–3 000 |
-| *`pv_inverter_*`* | | | | |
-| `pv_power_w` | Potência gerada | W | 30 s | 0–4 000 |
-| `pv_energy_today_kwh` | Energia gerada no dia | kWh | 30 s | 0–40 |
-| `inverter_state` | `generating`, `standby`, `fault` ou `off` | – | evento + 30 s | lista fechada |
-| *`relay_*`* | | | | |
-| `relay_on` | Relé ligado | – | evento + 60 s | – |
-| `power_w` | Potência da carga | W | 10 s | 0–2 500 |
-| `energy_kwh` | Energia acumulada da carga | kWh | 60 s | ≥ 0, não decresce |
-| *`gas_sensor_*`, `air_quality_*`, `siren_*`* | | | | |
-| `gas_detected` | Gás acima do limite do sensor | – | evento + 60 s | – |
-| `co2_ppm` | Concentração de CO~2~ | ppm | 60 s | 300–5 000 |
-| `temperature_c` | Temperatura do ambiente | °C | 60 s | −10 a 60 |
-| `siren_mode` | `off`, `warning` ou `alarm` | – | evento + 60 s | lista fechada |
+| Campo | Descrição | Tipo | Unid. | Frequência | Faixa válida |
+|---------------------------|---------------------------------|---------|-------|---------------|-------------------|
+| *`energy_meter_*`* |  |  |  |  |  |
+| `voltage_v[a,b]` | Tensão de cada fase | float | V | 10 s | 0–160 |
+| `current_a[a,b]` | Corrente de cada fase na entrada | float | A | 10 s | 0–80 |
+| `grid_power_w` | Potência trocada com a rede | float | W | 10 s | ±15 000 |
+| `power_factor` | Fator de potência na entrada | float | – | 10 s | 0–1 |
+| `frequency_hz` | Frequência da rede | float | Hz | 10 s | 55–65 |
+| `import_kwh`, `export_kwh` | Energia importada e injetada, acumuladas | float | kWh | 10 s | ≥ 0, não decresce |
+| `shower_power_w` | Potência do chuveiro | float | W | 10 s | 0–9 000 |
+| `ac_power_w` | Potência do ar-condicionado | float | W | 10 s | 0–3 000 |
+| *`pv_inverter_*`* |  |  |  |  |  |
+| `pv_power_w` | Potência gerada | float | W | 30 s | 0–4 000 |
+| `pv_energy_today_kwh` | Energia gerada no dia | float | kWh | 30 s | 0–40 |
+| `inverter_state` | `generating`, `standby`, `fault` ou `off` | enum | – | evento + 30 s | lista fechada |
+| *`relay_*`* |  |  |  |  |  |
+| `relay_on` | Relé ligado | boolean | – | evento + 60 s | – |
+| `power_w` | Potência da carga | float | W | 10 s | 0–2 500 |
+| `energy_kwh` | Energia acumulada da carga | float | kWh | 60 s | ≥ 0, não decresce |
+| *`gas_sensor_*`* |  |  |  |  |  |
+| `gas_detected` | Gás acima do limite do sensor | boolean | – | evento + 60 s | – |
+| *`air_quality_*`* |  |  |  |  |  |
+| `co2_ppm` | Concentração de CO~2~ | int | ppm | 60 s | 300–5 000 |
+| `temperature_c` | Temperatura do ambiente | float | °C | 60 s | −10 a 60 |
+| *`siren_*`* |  |  |  |  |  |
+| `siren_mode` | `off`, `warning` ou `alarm` | enum | – | evento + 60 s | lista fechada |
 
 Fonte: Elaborado pelo autor (2026).
 
-Os relés e o alarme informam ainda o campo `cmd_id`, identificador do último
-comando executado, utilizado para confirmar a ação (Seção 4.3).
+Os relés e o alarme informam ainda o campo `cmd_id` (`string`),
+identificador do último comando executado, utilizado para confirmar a ação (Seção 4.3).
 
 ## Campos comuns a todas as mensagens
 
@@ -103,14 +107,14 @@ mensagens contêm os campos da Tabela 3.
 
 : Metadados enviados em todas as mensagens.
 
-| Campo | Conteúdo e uso |
-|--------------|----------------------------------------------------------------------|
-| `device` | Identificador do dispositivo; deve coincidir com o tópico MQTT |
-| `ts` | Instante da leitura em UTC (ISO 8601, relógio sincronizado por NTP); em conjunto com `device`, forma a chave contra duplicatas |
-| `seq` | Contador incrementado a cada mensagem e reiniciado ao religar; permite detectar perdas, duplicatas e reinícios |
-| `uptime_s` | Tempo, em segundos, desde a inicialização; permite detectar reinícios inesperados |
-| `rssi_dbm` | Intensidade do sinal Wi-Fi, para diagnóstico de cobertura |
-| `buffered` | Indica leitura armazenada durante uma interrupção e enviada posteriormente; não dispara ações (Seção 7.3) |
+| Campo | Tipo | Conteúdo e uso |
+|--------------|---------|-------------------------------------------------------------|
+| `device` | string | Identificador do dispositivo; deve coincidir com o tópico MQTT |
+| `ts` | string | Instante da leitura em UTC (ISO 8601, relógio sincronizado por NTP); em conjunto com `device` e o tópico, forma a chave contra duplicatas |
+| `seq` | int | Contador incrementado a cada mensagem e reiniciado ao religar; permite detectar perdas, duplicatas e reinícios |
+| `uptime_s` | int | Tempo, em segundos, desde a inicialização; permite detectar reinícios inesperados |
+| `rssi_dbm` | int | Intensidade do sinal Wi-Fi, para diagnóstico de cobertura |
+| `buffered` | boolean | Indica leitura armazenada durante uma interrupção e enviada posteriormente; não dispara ações (Seção 7.3) |
 
 Fonte: Elaborado pelo autor (2026).
 
@@ -124,6 +128,8 @@ geração); o custo do dia e do mês ((importação − injeção compensável) 
 (tarifa + adicional da bandeira)); a projeção da fatura (custo acumulado ÷
 fração decorrida do mês); e o estado de cada dispositivo (`online`,
 `atrasado` ou `offline`, conforme o tempo desde a última mensagem). O custo
-calculado é uma estimativa, uma vez que a fatura real inclui tributos,
-contribuição de iluminação pública e regras de compensação que variam entre
-distribuidoras [@brasil2022lei14300].
+calculado é uma estimativa. As regras do Sistema de Compensação são
+nacionais [@brasil2022lei14300], mas a fatura real inclui tributos
+estaduais, contribuição municipal de iluminação pública, tarifas próprias de
+cada distribuidora, o custo de disponibilidade e a parcela da tarifa de uso
+da rede que deixa de ser compensada na transição da lei.
