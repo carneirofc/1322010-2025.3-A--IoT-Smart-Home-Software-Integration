@@ -90,7 +90,7 @@ export function AlertBoard({ initialAlerts }: { initialAlerts: readonly Alert[] 
           value={filter}
           options={FILTERS}
           onValueChange={setFilter}
-          className="gap-1 rounded-control border-borda bg-papel/90 p-1"
+          className="max-w-full flex-wrap gap-1 rounded-control border-borda bg-papel/90 p-1"
           optionClassName="rounded-[8px] px-3.5 py-1.5 font-semibold text-small hover:translate-y-0 shadow-none"
           activeOptionClassName="border-transparent bg-ciano-tint text-tinta shadow-[inset_0_0_0_1px_var(--color-ciano)]"
         />

@@ -64,13 +64,13 @@ export function EnergyMeter({ energy }: { energy: EnergySnapshot }) {
         </p>
         <div className="flex h-9 overflow-hidden rounded-full border border-borda bg-papel font-semibold text-small">
           <div
-            className="flex items-center rounded-full bg-[linear-gradient(90deg,color-mix(in_oklab,var(--color-ciano)_38%,white),color-mix(in_oklab,var(--color-ciano)_22%,white))] px-4 text-ciano-ink"
+            className="flex min-w-0 shrink items-center whitespace-nowrap rounded-full bg-[linear-gradient(90deg,color-mix(in_oklab,var(--color-ciano)_38%,white),color-mix(in_oklab,var(--color-ciano)_22%,white))] px-4 text-ciano-ink"
             style={{ width: `${sharedPct}%` }}
           >
             {selling ? "casa" : "telhado"}&nbsp;<span className="font-mono">{kw(sharedKw)}</span>
           </div>
           <div
-            className={`flex flex-1 items-center justify-end px-4 ${
+            className={`flex flex-1 shrink-0 items-center justify-end whitespace-nowrap px-4 ${
               selling ? "bg-lima-tint text-lima-ink" : "bg-laranja-tint text-laranja-ink"
             }`}
           >

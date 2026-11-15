@@ -22,7 +22,7 @@ export function NavTabs({ tabs }: { tabs: readonly TabLink[] }) {
   return (
     <nav
       aria-label="Telas do painel"
-      className="mx-auto flex max-w-page gap-2 px-6 pb-3 max-sm:overflow-x-auto max-sm:px-4"
+      className="mx-auto flex max-w-page flex-wrap gap-2 px-6 pb-3 max-sm:px-4"
     >
       {tabs.map((tab) => {
         const active = normalise(tab.href) === current;
