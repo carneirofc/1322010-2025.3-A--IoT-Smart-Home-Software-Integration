@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./ui-library.css";
 
 /*
  * Tokens of the "quadro de distribuição" identity (see DESIGN.md), for a

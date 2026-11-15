@@ -1,0 +1,209 @@
+/*
+ * @carneirofc/ui in our identity.
+ *
+ * The library's own stylesheet (its theme and remote fonts) is never
+ * imported. Its components read the custom properties and helper classes
+ * below; every value comes from the tokens in globals.css.
+ */
+
+/* Only the components the panel renders are scanned for utilities. */
+@source "../../node_modules/@carneirofc/ui/dist/OutlineButton.js";
+@source "../../node_modules/@carneirofc/ui/dist/SegmentedControl.js";
+@source "../../node_modules/@carneirofc/ui/dist/Dialog.js";
+@source "../../node_modules/@carneirofc/ui/dist/Collapsible.js";
+@source "../../node_modules/@carneirofc/ui/dist/CollapsiblePanel.js";
+@source "../../node_modules/@carneirofc/ui/dist/EmptyState.js";
+@source "../../node_modules/@carneirofc/ui/dist/InfoChip.js";
+@source "../../node_modules/@carneirofc/ui/dist/CopyButton.js";
+@source "../../node_modules/@carneirofc/ui/dist/Icons.js";
+
+:root {
+  /* Surfaces */
+  --ui-bg: var(--color-papel);
+  --ui-bg-card: var(--color-papel);
+  --ui-bg-soft: #e9edeb;
+  --ui-bg-muted: var(--color-placa);
+  --ui-bg-active: var(--color-modulo-tint);
+  --surface-0: var(--color-papel);
+  --surface-1: var(--color-papel);
+  --panel-white: var(--color-papel);
+
+  /* Ink */
+  --ui-ink: var(--color-grafite);
+  --ui-ink-strong: var(--color-grafite);
+  --ui-ink-title: var(--color-grafite);
+  --ui-ink-accent: var(--color-grafite);
+  --ui-ink-secondary: #3b4441;
+  --ui-ink-subtle: var(--color-fio);
+  --ui-ink-muted: var(--color-fio);
+  --ui-ink-hover: var(--color-grafite);
+  --ui-ink-highlight: var(--color-grafite);
+  /* Ink on the accent (Módulo blue) button. */
+  --text-0: var(--color-white);
+
+  /* Lines */
+  --ui-border: var(--color-linha);
+  --ui-border-strong: var(--color-grafite);
+  --ui-border-soft: var(--color-linha);
+  --ui-border-faint: var(--color-linha-fraca);
+  --ui-border-muted: var(--color-linha-forte);
+  --ui-border-modal: var(--color-grafite);
+  --ui-border-active: var(--color-grafite);
+  --ui-border-focus: var(--color-modulo);
+  --ui-ring-focus: var(--color-modulo);
+  --panel-border: var(--color-linha);
+  --panel-border-muted: var(--color-linha-forte);
+  --panel-border-strong: var(--color-modulo-escuro);
+
+  /* Accent: the photovoltaic-module blue */
+  --accent-cyan: var(--color-modulo);
+  --accent-pink: var(--color-modulo);
+
+  /* Overlay and the dialog's printed-label shadow */
+  --ui-overlay-strong: rgb(28 35 33 / 0.55);
+  --ui-overlay-soft: rgb(28 35 33 / 0.4);
+  --ui-shadow-strong: 6px 6px 0 rgb(28 35 33 / 0.22);
+
+  /* Type scale the components use (13 px floor) */
+  --ui-font-2xs: 14px;
+  --ui-font-xs: 15px;
+  --ui-font-sm: 15px;
+  --ui-font-md: 16px;
+  --ui-font-lg: 22px;
+  --ui-font-xl: 28px;
+}
+
+@theme inline {
+  --color-panel: var(--panel-white);
+  --color-ui-ink: var(--ui-ink);
+  --color-ui-ink-strong: var(--ui-ink-strong);
+  --color-ui-ink-title: var(--ui-ink-title);
+  --color-ui-ink-accent: var(--ui-ink-accent);
+  --color-ui-ink-secondary: var(--ui-ink-secondary);
+  --color-ui-ink-subtle: var(--ui-ink-subtle);
+  --color-ui-bg: var(--ui-bg);
+  --color-ui-bg-soft: var(--ui-bg-soft);
+  --color-ui-bg-muted: var(--ui-bg-muted);
+  --color-ui-bg-active: var(--ui-bg-active);
+  --color-ui-bg-card: var(--ui-bg-card);
+  --color-ui-overlay-soft: var(--ui-overlay-soft);
+  --color-ui-overlay-strong: var(--ui-overlay-strong);
+  --color-ui-faint: var(--ui-border-faint);
+  --shadow-ui-strong: var(--ui-shadow-strong);
+}
+
+/* Type helpers */
+@utility text-ui-2xs {
+  font-size: var(--ui-font-2xs);
+  line-height: 1.35;
+}
+@utility text-ui-xs {
+  font-size: var(--ui-font-xs);
+  line-height: 1.35;
+}
+@utility text-ui-sm {
+  font-size: var(--ui-font-sm);
+  line-height: 1.45;
+}
+@utility text-ui-lg {
+  font-size: var(--ui-font-lg);
+  line-height: 1.2;
+}
+
+/* Border helpers */
+@utility border-ui {
+  border-color: var(--ui-border);
+}
+@utility border-ui-strong {
+  border-color: var(--ui-border-strong);
+}
+@utility border-ui-soft {
+  border-color: var(--ui-border-soft);
+}
+@utility border-ui-faint {
+  border-color: var(--ui-border-faint);
+}
+@utility border-ui-modal {
+  border-color: var(--ui-border-modal);
+}
+@utility border-ui-active {
+  border-color: var(--ui-border-active);
+}
+
+@layer components {
+  /* InfoChip: a breaker label, square and ruled. */
+  .cyber-chip {
+    border: 1px solid var(--color-grafite);
+    background: var(--color-papel);
+    color: var(--color-grafite);
+  }
+
+  /* OutlineButton "accent": the one filled button, Módulo blue. */
+  .cyber-button {
+    border: 1px solid var(--color-modulo);
+    background: var(--color-modulo);
+    color: var(--color-white);
+  }
+  .cyber-button:hover:not(:disabled) {
+    background: var(--color-modulo-escuro);
+  }
+
+  .cyber-button-ghost {
+    border: 1px solid var(--color-linha);
+    background: transparent;
+    color: var(--color-grafite);
+  }
+}
+
+/* Radix enter/exit: only on open and close, which answer a click. */
+@keyframes ui-overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes ui-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes ui-collapsible-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+@keyframes ui-collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+.ui-anim-overlay[data-state="open"] {
+  animation: ui-overlay-in 140ms ease-out;
+}
+.ui-anim-dialog[data-state="open"] {
+  animation: ui-dialog-in 160ms ease-out;
+}
+.ui-anim-collapsible {
+  overflow: hidden;
+}
+.ui-anim-collapsible[data-state="open"] {
+  animation: ui-collapsible-down 200ms ease-out;
+}
+.ui-anim-collapsible[data-state="closed"] {
+  animation: ui-collapsible-up 160ms ease-in;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-anim-overlay,
+  .ui-anim-dialog,
+  .ui-anim-collapsible {
+    animation: none !important;
+  }
+}
