@@ -14,10 +14,23 @@ specified in the report (`relatorio/content/06-interface.md`, rules R1–R9 in
 ## Stack
 
 Next.js 16 (App Router, static export), React 19, TypeScript (strict,
-`noUncheckedIndexedAccess`), Tailwind CSS v4 (CSS-first tokens in
-`src/app/globals.css`), Biome. No UI kit, chart library, icon package or
-external font: icons are inline SVG components and the chart is an SVG
-computed from the mock series.
+`noUncheckedIndexedAccess`), Tailwind CSS v4, Biome.
+
+- **UI library:** `@carneirofc/ui` 1.2.0, vendored as
+  `vendor/carneirofc-ui-1.2.0.tgz` (MIT, tag v1.2.0 of
+  `carneirofc/deedlit.dev.ui`) and transpiled through `transpilePackages`.
+  Its stylesheet is **not** imported: `src/app/ui-library.css` defines the
+  custom properties and helper classes the components read, from our own
+  tokens. Components in use: `CyberPanel`, `CyberSubpanel`, `OutlineButton`,
+  `SegmentedControl`, `Dialog` (with its parts), `CollapsiblePanel`,
+  `EmptyState`, `InfoChip`, `CopyButton` and the `CheckIcon` icon.
+- **Visual language:** a light, print-first derivative of the deedlit.dev
+  language; palette, type scale and screen layouts are in `DESIGN.md`.
+  Tokens live in `src/app/globals.css`.
+- **Fonts:** Sora (text) and IBM Plex Mono (readings), bundled from
+  `@fontsource/sora` and `@fontsource/ibm-plex-mono`. No network fonts; the
+  report captures run offline.
+- No chart library: the 24 h chart is an SVG computed from the mock series.
 
 ## Commands
 
@@ -37,11 +50,17 @@ pnpm --filter prototype format     # biome format --write .
 ## Layout
 
 ```
+DESIGN.md       design direction (palette, type, screens, principles)
+vendor/         the vendored @carneirofc/ui tarball
 src/
-  app/          routes, root layout (header + tab navigation), globals.css
-  components/   small presentational components (Card, StatusPill, Meter,
-                EnergyFlow, DayChart, LoadRow, AlertItem, DeviceList, …)
-  lib/format.ts pt-BR number formatting (2,8 kW · R$ 151 · 1 240 ppm · −0,6)
+  app/          routes, root layout, globals.css (tokens),
+                ui-library.css (library variables and helper classes)
+  components/
+    shell/      header, screen tabs, page wrapper
+    ui/         shared pieces on top of the library (Button, Panel,
+                ConfirmAction, RuleChip, StateMark, Reading, Bar, …)
+    overview/ loads/ safety/ alerts/   one folder per screen
+  lib/format.ts pt-BR number formatting (2,8 kW, R$ 151, 1 240 ppm, −0,6)
   mocks/        types.ts (domain types), scenario.ts (the example scenario),
                 series.ts (24 h solar / load / grid curves)
 ```
@@ -54,9 +73,12 @@ data through props and hold no numbers of their own. The "Energia agora"
 figures are the last sample of the 24 h series in `series.ts`. Device ids
 follow `<type>_<location>_<nn>`, as in the report.
 
-Interaction is local state only: the Alertas filters (Todos / Abertos /
-Reconhecidos / Encerrados) filter the list and "Reconhecer" marks an open
-alert as acknowledged until the page reloads. All other buttons are inert.
+Interaction is local state only: the Alertas filters (Todos, Abertos,
+Reconhecidos, Encerrados) filter the list and "Reconhecer" marks an open
+alert as acknowledged until the page reloads. "Linha do tempo" opens the
+alert's record in a dialog, and "Ver comandos" links to Cargas. Relay and
+alarm actions ask for confirmation in a dialog; confirming only closes it.
+"Copiar id" copies the late device's id. Nothing reaches a backend.
 The first render is the scenario as specified, which is what the report
 figures show.
 
