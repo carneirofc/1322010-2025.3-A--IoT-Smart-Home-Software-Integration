@@ -1,0 +1,18 @@
+%%{init: {"flowchart": {"nodeSpacing": 30, "rankSpacing": 28, "wrappingWidth": 230}, "themeVariables": {"fontSize": "16px"}}}%%
+flowchart TB
+  IN["Regras avaliadas a cada 10 s<br/>propõem ações por carga"]
+  Q1{"Gás<br/>detectado?"}
+  Q2{"Carga em<br/>modo manual?"}
+  Q3{"Proteção contra<br/>sobrecarga ativa?"}
+  P4["<b>4 · Economia</b><br/>R1 e R2 ligam e desligam<br/>(mínimo 10 min em cada estado)"]
+  P1["<b>1 · Segurança</b><br/>nenhum relé é acionado (R8)"]
+  P2["<b>2 · Morador</b><br/>automação não mexe<br/>até 23:59"]
+  P3["<b>3 · Proteção</b><br/>R3 desliga;<br/>R1 bloqueada"]
+
+  IN --> Q1
+  Q1 -- "não" --> Q2
+  Q2 -- "não" --> Q3
+  Q3 -- "não" --> P4
+  Q1 -- "sim" --> P1
+  Q2 -- "sim" --> P2
+  Q3 -- "sim" --> P3
