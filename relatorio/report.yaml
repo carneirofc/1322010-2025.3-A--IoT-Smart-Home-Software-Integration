@@ -29,40 +29,37 @@ report:
 
   resumo: >-
     Este documento especifica o software de um sistema de Internet das Coisas
-    para uma residência com geração solar fotovoltaica. O sistema mede a
-    energia trocada com a rede, a geração solar e as duas maiores cargas da
-    casa, estima o custo da conta em reais e aciona cargas adiáveis — bomba da
-    piscina, lavadora e iluminação externa — quando há excedente de geração ou
-    risco de sobrecarga. Também monitora a segurança e a saúde da casa:
-    detecção de gás e de CO2, com alarme sonoro e luminoso, e qualidade do
-    fornecimento de energia. A especificação apresenta o problema e os usuários,
-    o dicionário de dados dos sensores, a arquitetura de integração do sensor à
-    aplicação, doze regras de negócio no formato SE/ENTÃO, os protótipos das
-    telas e a análise de riscos e resiliência. O sensor de gás tem alarme
-    local próprio; o software aciona o alarme da casa e acrescenta avisos,
-    histórico e ações secundárias. O protótipo visual reúne as telas, em uma aplicação
-    Next.js com dados simulados, e os diagramas do sistema. O projeto se apoia nos conceitos das
-    cinco unidades da disciplina: coleta, qualidade, armazenamento e
-    integração de dados de sensores.
+    para uma residência com geração solar fotovoltaica conectada à rede. O
+    sistema mede a energia trocada com a rede, a geração solar e as duas
+    maiores cargas da residência, estima o custo da fatura e aciona cargas
+    adiáveis (bomba da piscina, lavadora e iluminação externa) conforme o
+    excedente de geração e o risco de sobrecarga do disjuntor geral. O sistema
+    monitora também a segurança e a saúde do ambiente, com detecção de gás e
+    de CO2 integrada ao alarme da casa e acompanhamento da tensão de
+    fornecimento. A especificação apresenta o problema e os usuários, o
+    dicionário de dados, a arquitetura de integração do sensor à aplicação,
+    doze regras de negócio no formato SE/ENTÃO, a interface e a análise de
+    riscos e resiliência. O protótipo visual consiste em uma aplicação Next.js
+    com dados simulados. O projeto fundamenta-se nos conceitos de coleta,
+    qualidade, armazenamento e integração de dados de sensores estudados na
+    disciplina.
   palavras-chave: [Internet das Coisas, Automação residencial, Eficiência energética, Energia solar fotovoltaica, MQTT]
 
   abstract: >-
     This document specifies the software of an Internet of Things system for a
-    home with rooftop solar generation. The system measures the energy
-    exchanged with the grid, the solar generation and the two largest loads of
-    the house, estimates the electricity bill in reais and switches deferrable
-    loads — pool pump, washing machine and outdoor lights — when there is
-    surplus generation or a risk of overload. It also monitors the safety and
-    health of the house: gas and CO2 detection, with an audible and visual
-    alarm, and the quality of the power supply. The specification covers the problem
-    and its users, the sensor data dictionary, the integration architecture
-    from sensor to application, twelve IF/THEN business rules, the screen
-    prototypes and the risk and resilience analysis. The gas sensor has its own
-    local alarm; the software triggers the house alarm and adds notifications,
-    history and secondary actions.
-    The visual prototype comprises the screens, as a Next.js app with mock
-    data, and the system diagrams. The design builds on the five units of the course: sensor
-    data collection, quality, storage and integration.
+    home with grid-connected rooftop solar generation. The system measures the
+    energy exchanged with the grid, the solar generation and the two largest
+    loads of the house, estimates the electricity bill and switches deferrable
+    loads (pool pump, washing machine and outdoor lights) according to surplus
+    generation and the risk of overloading the main breaker. It also monitors
+    the safety and health of the home, with gas and CO2 detection integrated
+    with the house alarm and monitoring of the supply voltage. The
+    specification covers the problem and its users, the data dictionary, the
+    integration architecture from sensor to application, twelve IF/THEN
+    business rules, the user interface and the risk and resilience analysis.
+    The visual prototype is a Next.js application with simulated data. The
+    design builds on the concepts of sensor data collection, quality, storage
+    and integration studied in the course.
   keywords: [Internet of Things, Home automation, Energy efficiency, Solar photovoltaics, MQTT]
 
 # ---------------------------------------------------------------------------
