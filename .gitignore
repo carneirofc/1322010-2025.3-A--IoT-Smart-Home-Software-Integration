@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Course material (UFJF, copyrighted) — local reference only, never published
+material/
+
+# Report build output
+relatorio/build/
+
+# Python / editors
+.venv/
+__pycache__/
+.mypy_cache/
+.ruff_cache/
+.idea/
+.vscode/
