@@ -35,14 +35,16 @@ repositório. A aplicação utiliza os componentes da biblioteca
 a identidade visual.
 
 Os dados provêm de um cenário simulado, tipado e reunido em um único módulo,
-que reproduz a residência em um dia útil às 14:45, com leituras, cargas,
+que reproduz a residência em uma terça-feira, 17 de novembro de 2026, às
+14:45, com leituras, cargas,
 dispositivos, alertas e as curvas das últimas 24 horas. As telas não contêm
-valores fixos no código; todos são calculados a partir do cenário, o que
+valores fixos no código; todos são lidos ou calculados a partir do cenário,
+como a projeção da fatura e os totais do dia, o que
 garante a coerência entre as telas e com as regras do Capítulo 5. Os tipos
 do cenário seguem o dicionário de dados do Capítulo 3. A navegação entre
 abas, o filtro de alertas e o reconhecimento de alertas, com atualização do
 contador da aba, funcionam no próprio navegador. As figuras deste capítulo
-são capturas da aplicação em uma janela de 1 024 px de largura.
+são capturas da aplicação em uma janela de 1 024 px de largura.
 
 ## Navegação
 
@@ -57,14 +59,14 @@ Fonte: Elaborado pelo autor (2026).
 ## Visão geral
 
 A tela inicial (Figura 5) informa, em primeiro lugar, se a residência está
-importando ou injetando energia. No cenário, a geração é de 2,8 kW, o
-consumo é de 2,2 kW e o excedente de 0,6 kW é injetado na rede. A tela
+importando ou injetando energia. No cenário, a geração é de 2,8 kW, o
+consumo é de 2,2 kW e o excedente de 0,6 kW é injetado na rede. A tela
 apresenta também o custo do dia e do mês, com a projeção da fatura em
 relação ao orçamento (R4), e o gráfico das últimas 24 horas, com geração,
 consumo e troca com a rede. Um resumo das cargas e dos alertas abertos dá
 acesso às demais abas. A lavadora possui um ciclo programado, mas aguarda um
-excedente de 1,2 kW, correspondente aos 1 000 W da carga e à margem de
-200 W da R1.
+excedente de 1,2 kW, correspondente aos 1 000 W da carga e à margem de
+200 W da R1.
 
 ![Tela Visão geral do protótipo.](fig05-tela-visao-geral.png){width=100%}
 
@@ -79,7 +81,9 @@ disponíveis. A corrente de entrada é exibida em relação à capacidade do
 disjuntor geral, indicando se a proteção contra sobrecarga (R3) está
 atuando. A iluminação externa encontra-se em modo manual até 23:59, pois foi
 desligada por um morador pela manhã (Seção 5.5). O histórico apresenta cada
-comando com a origem e o tempo de confirmação do relé.
+comando com a origem e o tempo de confirmação do relé, incluindo o primeiro
+ciclo da lavadora, ligado pela rede às 08:00 para cumprir um prazo da manhã,
+desligado pela R3 quando o chuveiro foi ligado e religado depois.
 
 ![Tela Cargas do protótipo.](fig06-tela-cargas.png){width=100%}
 
@@ -91,8 +95,8 @@ A Figura 7 reúne as informações de segurança e saúde: detecção de gás e
 estado do alarme da casa, que pode ser testado pela tela; qualidade do ar do
 quarto; funcionamento do ar-condicionado; tensão de cada fase; e saúde dos
 dispositivos. No cenário, a concentração de CO~2~ no quarto está acima de
-1 000 ppm há 20 minutos (R9), e o ar-condicionado está ligado fora do
-horário de uso (R7). O painel de dispositivos indica um relé em estado
+1 000 ppm há 20 minutos (R9), e o ar-condicionado mantém o quarto a 21 °C,
+abaixo da faixa recomendada (R6). O painel de dispositivos indica um relé em estado
 atrasado (Figura 9) e apresenta a contagem de mensagens rejeitadas e de
 duplicatas descartadas, informação útil ao instalador para o diagnóstico da
 comunicação.
@@ -120,6 +124,6 @@ Os diagramas deste documento (arquitetura, sequência, arbitragem,
 navegação, estados e validação) foram escritos em Mermaid e são convertidos
 em figuras durante a geração do PDF. O protótipo funcional seguiria o fluxo
 da Figura 1 sem hardware: um simulador publicaria as mensagens dos
-dispositivos da Tabela 1, incluindo as falhas da Tabela 5; o middleware
+dispositivos da Tabela 1, incluindo as falhas da Tabela 6; o middleware
 validaria, armazenaria e aplicaria as regras; e as mesmas telas substituiriam
 o módulo simulado pela API REST e pelo canal WebSocket (Seção 4.4).
