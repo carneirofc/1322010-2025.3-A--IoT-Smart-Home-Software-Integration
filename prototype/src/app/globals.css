@@ -1,21 +1,62 @@
 @import "tailwindcss";
 
-/* Design tokens for a 1024 px wide desktop viewport (printed at ~16 cm). */
+/*
+ * Tokens of the "quadro de distribuição" identity (see DESIGN.md), for a
+ * 1024 px wide viewport printed at ~16 cm on white paper.
+ */
 @theme {
-  --font-sans: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-sans: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", Arial, sans-serif;
+  --font-label: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
 
   /* Font sizes without a paired line height: text inherits the body leading. */
   --text-*: initial;
+  --text-caption: 13px;
+  --text-small: 14px;
+  --text-body: 16px;
+  --text-heading: 20px;
+  --text-title: 28px;
+  --text-display: 40px;
+  --text-reading: 64px;
+
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-white: #ffffff;
+  --color-placa: #f2f4f3;
+  --color-papel: #ffffff;
+  --color-grafite: #1c2321;
+  --color-fio: #56605c;
+  --color-linha: #c9cfcc;
+  --color-linha-fraca: #dde2e0;
+  --color-linha-forte: #8e9893;
+  --color-modulo: #1f4e8c;
+  --color-modulo-escuro: #163a69;
+  --color-modulo-tint: #e4ebf5;
+  --color-solar-area: rgb(31 78 140 / 0.14);
+  --color-marrom: #8a5a12;
+
+  /* Bandeira: state only, always next to its word. */
+  --color-verde: #1e7a46;
+  --color-verde-ink: #145232;
+  --color-verde-tint: #e3f1e8;
+  --color-amarela: #e3ae00;
+  --color-amarela-ink: #5a4300;
+  --color-amarela-tint: #fff3c4;
+  --color-laranja: #b85400;
+  --color-laranja-ink: #8a3f00;
+  --color-laranja-tint: #fcebdd;
+  --color-vermelha: #b8261e;
+  --color-vermelha-ink: #8e1b15;
+  --color-vermelha-tint: #fbe6e4;
+
+  --container-page: 1024px;
+
+  /* Legacy tokens of the first prototype, removed once every screen moves over. */
   --text-xs: 13px;
   --text-sm: 14px;
   --text-base: 16px;
   --text-md: 18px;
   --text-lg: 22px;
   --text-xl: 28px;
-
-  --color-*: initial;
-  --color-white: #ffffff;
   --color-canvas: #f2f4f7;
   --color-surface: #ffffff;
   --color-surface-muted: #f7f8fa;
@@ -26,8 +67,6 @@
   --color-brand: #1f3a5f;
   --color-brand-hover: #29497a;
   --color-brand-soft: #e8eef6;
-
-  /* Status semantics: green normal, yellow attention, orange warning, red critical. */
   --color-ok-fg: #1b6e37;
   --color-ok-bg: #e6f4ea;
   --color-ok-solid: #2e7d32;
@@ -48,8 +87,6 @@
   --color-neutral-fg: #4a5565;
   --color-neutral-bg: #eceff3;
   --color-neutral-solid: #8a94a3;
-
-  /* Chart series (not status colours). */
   --color-solar: #d08c00;
   --color-solar-fill: rgba(240, 176, 30, 0.22);
   --color-solar-bg: #fff8e6;
@@ -58,30 +95,34 @@
   --color-exchange: #7a52b3;
   --color-projection: #9fb1c9;
   --color-projection-light: #c3cfdf;
-
   --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.05);
-  --container-page: 1024px;
 }
 
 @layer base {
   html {
-    font-size: var(--text-base);
+    font-size: var(--text-body);
+    background: var(--color-placa);
   }
 
   body {
     font-family: var(--font-sans);
-    font-size: var(--text-base);
-    line-height: 1.4;
-    color: var(--color-fg);
-    background: var(--color-canvas);
+    font-size: var(--text-body);
+    line-height: 1.45;
+    color: var(--color-grafite);
+    background: var(--color-placa);
     -webkit-font-smoothing: antialiased;
   }
 
   a {
-    color: var(--color-brand);
+    color: var(--color-modulo);
   }
 
   button:not(:disabled) {
     cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-modulo);
+    outline-offset: 2px;
   }
 }
