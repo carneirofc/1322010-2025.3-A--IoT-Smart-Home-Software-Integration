@@ -6,7 +6,9 @@ ferramentas, protótipos de telas e painéis com dados simulados
 partes:
 
 - **Telas:** uma aplicação web em Next.js (React e TypeScript, estilizada
-  com Tailwind CSS), na pasta `prototype/` do repositório, com as quatro
+  com Tailwind CSS e montada com os componentes da biblioteca
+  `@carneirofc/ui`, incluída no repositório), na pasta `prototype/` do
+  repositório, com as quatro
   telas do Capítulo 6. Os dados vêm de um cenário simulado (*mock*), tipado e
   reunido em um único módulo, que reproduz a casa às 14:45 de um dia útil:
   leituras, cargas, dispositivos, alertas e as curvas das últimas 24 h. As

@@ -10,9 +10,10 @@ celular (PWA). Ela segue quatro princípios:
 - **Toda ação automática tem explicação:** cada carga mostra quem a ligou ou
   desligou por último (uma regra ou um morador), quando, e se o relé
   confirmou.
-- **Cor só para estado:** verde para normal, amarelo para atenção, laranja
-  para aviso e vermelho para crítico. As mesmas cores valem nos alertas e nos
-  cartões.
+- **Cada cor com um só significado:** ciano é a energia solar e rosa é a
+  rede; verde é normal, âmbar é atenção, laranja é aviso e vermelho é
+  crítico. Toda cor de estado vem acompanhada da palavra, para que a tela
+  continue legível impressa ou para quem não distingue as cores.
 - **O morador manda:** qualquer carga pode ser assumida manualmente; a tela
   diz até quando a automação fica afastada.
 
@@ -26,7 +27,12 @@ As telas a seguir vêm do protótipo visual: uma aplicação Next.js, na pasta
 `prototype/` do repositório, alimentada por dados simulados (*mock*) que
 reproduzem um instante da casa. As abas navegam entre as telas, os filtros
 de alertas funcionam e o botão "Reconhecer" muda o estado do alerta no
-próprio navegador; não há comunicação com o middleware. Todas mostram a mesma casa no mesmo instante, um dia útil às 14:45, para que
+próprio navegador (o contador da aba acompanha); não há comunicação com o
+middleware. A identidade visual deriva da biblioteca de componentes
+`@carneirofc/ui`, do próprio autor: painéis com borda em gradiente, a
+tipografia Sora para os textos e IBM Plex Mono para as leituras, adaptados
+a um fundo claro que funciona também impresso. Cada tela destaca em um
+painel principal a pergunta que ela responde. Todas mostram a mesma casa no mesmo instante, um dia útil às 14:45, para que
 os números sejam coerentes entre si e com as regras do Capítulo 5. As figuras
 são capturas dessas telas em uma janela de 1 024 px de largura.
 
@@ -45,7 +51,9 @@ Fonte: Elaborado pelo autor (2026).
 A Figura 5 mostra a tela inicial. O fluxo de energia (solar, casa e rede)
 responde se a casa está comprando ou vendendo energia agora. Os cartões de
 hoje e do mês trazem o custo estimado em reais e a projeção da conta contra o
-orçamento (R4). Embaixo, um resumo das cargas e dos alertas abertos leva às
+orçamento (R4). O gráfico das últimas 24 horas mostra a geração solar, o
+consumo da casa e a troca com a rede, negativa quando a casa vende. Embaixo,
+um resumo das cargas e dos alertas abertos leva às
 outras abas.
 
 ![*Mockup* da tela Visão geral.](fig05-tela-visao-geral.png){width=100%}
