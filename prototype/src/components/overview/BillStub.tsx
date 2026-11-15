@@ -1,4 +1,4 @@
-import { formatBrl, percentOf } from "@/lib/format";
+import { formatBrl, formatNumber, percentOf } from "@/lib/format";
 import type { MonthBudget, TariffFlag, Tone } from "@/mocks/types";
 import { Bar, BarFigure, BarScale, PROJECTION_FILL } from "../ui/Bar";
 import { Panel } from "../ui/Panel";
@@ -26,7 +26,10 @@ export function BillStub({ month }: { month: MonthBudget }) {
       }
     >
       <p className="flex items-baseline gap-2">
-        <span className="font-mono text-display leading-tight">{formatBrl(month.spentBrl)}</span>
+        <span className="font-mono text-display leading-tight">
+          <span className="mr-[0.18em] font-sans font-semibold text-[0.5em]">R$</span>
+          {formatNumber(month.spentBrl)}
+        </span>
         <span className="text-tinta-suave">gastos até agora</span>
       </p>
       <BarFigure

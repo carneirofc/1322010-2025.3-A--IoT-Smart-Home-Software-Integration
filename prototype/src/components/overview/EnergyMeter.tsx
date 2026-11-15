@@ -1,6 +1,7 @@
 import { CyberPanel } from "@carneirofc/ui";
 import { formatDecimal, percentOf } from "@/lib/format";
 import type { EnergySnapshot } from "@/mocks/types";
+import { Reading } from "../ui/Reading";
 
 const kw = (value: number): string => `${formatDecimal(value)} kW`;
 
@@ -24,13 +25,13 @@ export function EnergyMeter({ energy }: { energy: EnergySnapshot }) {
             {selling ? "Agora a casa está vendendo energia" : "Agora a casa está comprando energia"}
           </h2>
           <p className="mt-1 flex items-baseline gap-3">
-            <span
-              className={`font-medium font-mono text-reading leading-none tracking-[-0.03em] ${
+            <Reading
+              value={formatDecimal(gridKw)}
+              unit="kW"
+              className={`font-medium text-reading leading-none tracking-[-0.03em] ${
                 selling ? "text-lima-ink" : "text-laranja-ink"
               }`}
-            >
-              {kw(gridKw)}
-            </span>
+            />
             <span className="font-semibold text-tinta-2">
               {selling ? "injetados na rede" : "vindos da rede"}
             </span>
@@ -39,8 +40,12 @@ export function EnergyMeter({ energy }: { energy: EnergySnapshot }) {
         <dl className="grid grid-cols-2 gap-x-8 text-right max-sm:text-left">
           <dt className="font-semibold text-ciano-ink text-small">Telhado gera</dt>
           <dt className="font-semibold text-small text-violeta">Casa consome</dt>
-          <dd className="font-mono text-display leading-tight">{kw(energy.solarKw)}</dd>
-          <dd className="font-mono text-display leading-tight">{kw(energy.houseKw)}</dd>
+          <dd className="text-display leading-tight">
+            <Reading value={formatDecimal(energy.solarKw)} unit="kW" />
+          </dd>
+          <dd className="text-display leading-tight">
+            <Reading value={formatDecimal(energy.houseKw)} unit="kW" />
+          </dd>
         </dl>
       </div>
       <div
