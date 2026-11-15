@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+/* Design tokens for a 1024 px wide desktop viewport (printed at ~16 cm). */
+@theme {
+  --font-sans: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Font sizes without a paired line height: text inherits the body leading. */
+  --text-*: initial;
+  --text-xs: 13px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-md: 18px;
+  --text-lg: 22px;
+  --text-xl: 28px;
+
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-canvas: #f2f4f7;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f7f8fa;
+  --color-line: #e1e5eb;
+  --color-line-strong: #c9d0da;
+  --color-fg: #172231;
+  --color-fg-muted: #586474;
+  --color-brand: #1f3a5f;
+  --color-brand-hover: #29497a;
+  --color-brand-soft: #e8eef6;
+
+  /* Status semantics: green normal, yellow attention, orange warning, red critical. */
+  --color-ok-fg: #1b6e37;
+  --color-ok-bg: #e6f4ea;
+  --color-ok-solid: #2e7d32;
+  --color-ok-line: #b9dfc4;
+  --color-ok-band: #9fd2ad;
+  --color-ok-glow: #b9f0c2;
+  --color-attention-fg: #6f5100;
+  --color-attention-bg: #fff4c7;
+  --color-attention-solid: #e8b400;
+  --color-attention-line: #ecd27a;
+  --color-attention-ink: #3d2d00;
+  --color-warning-fg: #a14400;
+  --color-warning-bg: #fff0e1;
+  --color-warning-solid: #c25100;
+  --color-critical-fg: #b42318;
+  --color-critical-bg: #fdecea;
+  --color-critical-solid: #c62828;
+  --color-neutral-fg: #4a5565;
+  --color-neutral-bg: #eceff3;
+  --color-neutral-solid: #8a94a3;
+
+  /* Chart series (not status colours). */
+  --color-solar: #d08c00;
+  --color-solar-fill: rgba(240, 176, 30, 0.22);
+  --color-solar-bg: #fff8e6;
+  --color-solar-line: #f3dfa6;
+  --color-load: #1f3a5f;
+  --color-exchange: #7a52b3;
+  --color-projection: #9fb1c9;
+  --color-projection-light: #c3cfdf;
+
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.05);
+  --container-page: 1024px;
+}
+
+@layer base {
+  html {
+    font-size: var(--text-base);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.4;
+    color: var(--color-fg);
+    background: var(--color-canvas);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--color-brand);
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}
