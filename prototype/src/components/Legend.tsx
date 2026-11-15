@@ -6,11 +6,11 @@ export function Legend({ className = "", children }: { className?: string; child
   );
 }
 
-/** One legend entry; `swatch` carries the border classes that draw the sample. */
+/** One legend entry; `swatch` carries the size and border classes that draw the sample. */
 export function LegendItem({ swatch, children }: { swatch: string; children: ReactNode }) {
   return (
     <span className="inline-flex items-center gap-1.5">
-      <span className={`h-0 ${swatch}`} aria-hidden="true" />
+      <span className={swatch} aria-hidden="true" />
       {children}
     </span>
   );

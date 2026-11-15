@@ -1,3 +1,26 @@
+import type { Metadata } from "next";
+import { EnergyFlow } from "@/components/EnergyFlow";
+import { LoadsNowCard } from "@/components/LoadsNowCard";
+import { MonthCard } from "@/components/MonthCard";
+import { OpenAlertsCard } from "@/components/OpenAlertsCard";
+import { Page } from "@/components/Page";
+import { TodayCard } from "@/components/TodayCard";
+import { scenario } from "@/mocks/scenario";
+
+export const metadata: Metadata = { title: "Visão geral" };
+
 export default function OverviewPage() {
-  return <main className="mx-auto max-w-page px-6 pt-4 pb-6">Casa Monitorada</main>;
+  return (
+    <Page title="Visão geral" updatedAt={scenario.now}>
+      <EnergyFlow energy={scenario.energy} />
+      <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+        <TodayCard today={scenario.today} />
+        <MonthCard month={scenario.month} />
+      </div>
+      <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+        <LoadsNowCard loads={scenario.loads} />
+        <OpenAlertsCard alerts={scenario.alerts} />
+      </div>
+    </Page>
+  );
 }

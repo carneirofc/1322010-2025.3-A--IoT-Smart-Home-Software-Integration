@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CountBadge } from "./CountBadge";
 
 export interface TabLink {
   href: string;
@@ -29,10 +30,7 @@ export function TabNav({ tabs }: { tabs: readonly TabLink[] }) {
           >
             {tab.label}
             {tab.badge && tab.badge.count > 0 ? (
-              <span className="inline-grid h-[22px] min-w-[22px] place-items-center rounded-full bg-warning-solid px-1.5 font-bold text-white text-xs">
-                {tab.badge.count}
-                <span className="sr-only"> {tab.badge.label}</span>
-              </span>
+              <CountBadge count={tab.badge.count} label={tab.badge.label} />
             ) : null}
           </Link>
         ))}
