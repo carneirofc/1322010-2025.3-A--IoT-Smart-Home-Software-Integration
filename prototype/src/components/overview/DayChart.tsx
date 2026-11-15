@@ -7,7 +7,7 @@ const PLOT = { left: 40, right: 924, top: 12, bottom: 170 };
 const Y_RANGE = { min: -3, max: 5 };
 const TICK_EVERY_H = 3;
 /** Hour ticks closer than this to either end would collide with the end labels. */
-const TICK_END_GAP_H = 1.5;
+const TICK_END_GAP_H = 2.5;
 const AXIS_LABEL_Y = 192;
 const Y_LABEL_X = 32;
 const Y_LABEL_DY = 4.5;
@@ -27,23 +27,23 @@ interface SeriesLook {
 
 const SOLAR: SeriesLook = {
   key: "solarKw",
-  line: "fill-none stroke-2 stroke-modulo",
-  dot: "fill-modulo",
-  label: "fill-modulo",
+  line: "fill-none stroke-2 stroke-ciano",
+  dot: "fill-ciano",
+  label: "fill-ciano-ink",
   labelDy: -8,
 };
 const LOAD: SeriesLook = {
   key: "loadKw",
-  line: "fill-none stroke-[2.2] stroke-grafite",
-  dot: "fill-grafite",
-  label: "fill-grafite",
+  line: "fill-none stroke-[2.2] stroke-violeta",
+  dot: "fill-violeta",
+  label: "fill-violeta",
   labelDy: 16,
 };
 const GRID: SeriesLook = {
   key: "gridKw",
-  line: "fill-none stroke-2 stroke-marrom [stroke-dasharray:6_4]",
-  dot: "fill-marrom",
-  label: "fill-marrom",
+  line: "fill-none stroke-2 stroke-rosa-ink [stroke-dasharray:6_4]",
+  dot: "fill-rosa-ink",
+  label: "fill-rosa-ink",
   labelDy: 16,
 };
 
@@ -111,7 +111,7 @@ export function DayChart({ series }: { series: DaySeries }) {
       viewBox={`0 0 ${VIEW.width} ${VIEW.height}`}
       role="img"
       aria-label={describe(samples)}
-      className="block h-auto w-full fill-fio text-[13px]"
+      className="block h-auto w-full fill-tinta-suave font-mono text-[13px]"
     >
       {yTicks.map((kw) => {
         const y = coord(s.y(kw));
@@ -122,7 +122,7 @@ export function DayChart({ series }: { series: DaySeries }) {
               x2={PLOT.right}
               y1={y}
               y2={y}
-              className={kw === 0 ? "stroke-[1.5] stroke-grafite" : "stroke-1 stroke-linha-fraca"}
+              className={kw === 0 ? "stroke-[1.5] stroke-tinta-suave" : "stroke-1 stroke-linha"}
             />
             <text x={Y_LABEL_X} y={coord(s.y(kw) + Y_LABEL_DY)} textAnchor="end">
               {formatNumber(kw)}
@@ -137,7 +137,7 @@ export function DayChart({ series }: { series: DaySeries }) {
         x={PLOT.right - 110}
         y={coord(PLOT.bottom - ZONE_LABEL_INSET)}
         textAnchor="end"
-        className="font-semibold"
+        className="font-sans font-semibold"
       >
         abaixo de 0: venda para a rede
       </text>
@@ -155,7 +155,7 @@ export function DayChart({ series }: { series: DaySeries }) {
               y1={PLOT.top}
               y2={PLOT.bottom}
               strokeDasharray="2 4"
-              className="stroke-1 stroke-linha-fraca"
+              className="stroke-1 stroke-linha"
             />
             <text x={x} y={AXIS_LABEL_Y} textAnchor="middle">
               {clockLabel(hour)}
@@ -181,9 +181,9 @@ export function DayChart({ series }: { series: DaySeries }) {
         x2={lastX}
         y1={PLOT.top}
         y2={PLOT.bottom}
-        className="stroke-[1.2] stroke-grafite [stroke-dasharray:3_3]"
+        className="stroke-[1.2] stroke-tinta [stroke-dasharray:3_3]"
       />
-      <text x={lastX} y={AXIS_LABEL_Y} textAnchor="end" className="fill-grafite font-bold">
+      <text x={lastX} y={AXIS_LABEL_Y} textAnchor="end" className="fill-tinta font-semibold">
         agora {clockLabel(s.last)}
       </text>
       {now

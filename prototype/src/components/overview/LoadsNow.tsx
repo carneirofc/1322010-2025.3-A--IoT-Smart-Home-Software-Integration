@@ -1,6 +1,6 @@
 import type { Load } from "@/mocks/types";
-import { Lever } from "../ui/Lever";
-import { Section } from "../ui/Section";
+import { Panel } from "../ui/Panel";
+import { RelayDot } from "../ui/RelayDot";
 
 /** Relay state in words; an armed cycle reads as waiting. */
 export function loadStateWord(load: Load): string {
@@ -11,21 +11,18 @@ export function loadStateWord(load: Load): string {
 
 export function LoadsNow({ loads }: { loads: readonly Load[] }) {
   return (
-    <Section id="loads-title" title="Cargas agora" link={{ href: "/cargas/", label: "Ver cargas" }}>
-      <ul>
+    <Panel id="loads-title" title="Cargas agora" link={{ href: "/cargas/", label: "Ver cargas" }}>
+      <ul className="divide-y divide-linha">
         {loads.map((load) => (
-          <li
-            key={load.deviceId}
-            className="flex items-center gap-3 border-linha border-b py-1.5 last:border-b-0"
-          >
-            <Lever on={load.relay === "on"} />
+          <li key={load.deviceId} className="flex items-center gap-3 py-1.5">
+            <RelayDot on={load.relay === "on"} />
             <span className="min-w-0 flex-1">
               <span className="block font-semibold leading-tight">{load.name}</span>
-              <span className="text-fio text-small">{load.summary}</span>
+              <span className="text-small text-tinta-suave">{load.summary}</span>
             </span>
             <span
-              className={`font-label font-semibold text-heading ${
-                load.relay === "on" ? "text-grafite" : "text-fio"
+              className={`font-semibold text-small ${
+                load.relay === "on" ? "text-ciano-ink" : "text-tinta-suave"
               }`}
             >
               {loadStateWord(load)}
@@ -33,6 +30,6 @@ export function LoadsNow({ loads }: { loads: readonly Load[] }) {
           </li>
         ))}
       </ul>
-    </Section>
+    </Panel>
   );
 }

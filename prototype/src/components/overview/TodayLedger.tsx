@@ -1,7 +1,8 @@
 import { formatDecimal, formatNumber } from "@/lib/format";
 import type { DayTotals } from "@/mocks/types";
+import { Panel } from "../ui/Panel";
 
-/** Today's totals as the line items of a bill, with dotted leaders. */
+/** Today's totals as line items with dotted leaders. */
 export function TodayLedger({ today }: { today: DayTotals }) {
   const items = [
     { label: "Energia gerada", value: formatDecimal(today.generatedKwh), unit: "kWh" },
@@ -10,25 +11,22 @@ export function TodayLedger({ today }: { today: DayTotals }) {
     { label: "Crédito na rede", value: formatDecimal(today.gridCreditKwh), unit: "kWh" },
   ];
   return (
-    <section aria-labelledby="today-title" className="border border-grafite bg-papel px-4 py-3">
-      <h2 id="today-title" className="font-bold font-label text-heading">
-        Hoje, até {today.until}
-      </h2>
-      <dl className="mt-1">
+    <Panel id="today-title" title={`Hoje, até ${today.until}`}>
+      <dl>
         {items.map((item) => (
           <div key={item.label} className="flex items-baseline gap-2 py-[3px]">
             <dt>{item.label}</dt>
             <span
               aria-hidden="true"
-              className="min-w-4 flex-1 translate-y-[-4px] border-linha-forte border-b-2 border-dotted"
+              className="min-w-4 flex-1 translate-y-[-4px] border-borda border-b-2 border-dotted"
             />
-            <dd className="font-label font-semibold text-heading tabular-nums">
+            <dd className="font-medium font-mono">
               {item.value}{" "}
-              <span className="font-sans font-normal text-fio text-small">{item.unit}</span>
+              <span className="font-normal text-small text-tinta-suave">{item.unit}</span>
             </dd>
           </div>
         ))}
       </dl>
-    </section>
+    </Panel>
   );
 }

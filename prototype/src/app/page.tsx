@@ -19,7 +19,7 @@ export default function OverviewPage() {
         <TodayLedger today={scenario.today} />
       </div>
       <DaySection series={scenario.series} />
-      <div className="mt-5 grid grid-cols-2 gap-6 max-sm:grid-cols-1">
+      <div className="mt-4 grid grid-cols-2 gap-4 max-sm:grid-cols-1">
         <LoadsNow loads={scenario.loads} />
         <OpenAlerts alerts={scenario.alerts} />
       </div>

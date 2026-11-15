@@ -1,8 +1,9 @@
+import { CyberSubpanel } from "@carneirofc/ui";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-/** A titled block separated by a rule; `link` sends to the screen with the details. */
-export function Section({
+/** A titled CyberSubpanel; `link` sends to the screen with the details. */
+export function Panel({
   id,
   title,
   aside,
@@ -18,9 +19,13 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section aria-labelledby={id} className={className}>
-      <div className="mb-2 flex items-baseline justify-between gap-4 border-grafite border-b pb-1">
-        <h2 id={id} className="font-bold font-label text-heading leading-tight">
+    <CyberSubpanel
+      role="region"
+      aria-labelledby={id}
+      className={`rounded-sub px-5 py-3.5 ${className}`}
+    >
+      <div className="mb-1.5 flex items-baseline justify-between gap-4">
+        <h2 id={id} className="font-semibold text-heading leading-tight">
           {title}
         </h2>
         {aside}
@@ -31,6 +36,6 @@ export function Section({
         ) : null}
       </div>
       {children}
-    </section>
+    </CyberSubpanel>
   );
 }

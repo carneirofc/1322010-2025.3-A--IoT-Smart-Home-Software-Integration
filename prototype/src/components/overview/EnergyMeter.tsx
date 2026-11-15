@@ -1,25 +1,23 @@
+import { CyberPanel } from "@carneirofc/ui";
 import { formatDecimal, percentOf } from "@/lib/format";
 import type { EnergySnapshot } from "@/mocks/types";
 
 const kw = (value: number): string => `${formatDecimal(value)} kW`;
 
 /**
- * The house's bidirectional meter: buying or selling right now, and how the
- * larger of solar and consumption splits between the house and the grid.
+ * Energy right now: buying or selling, and how the larger of solar and
+ * consumption splits between the house and the grid.
  */
 export function EnergyMeter({ energy }: { energy: EnergySnapshot }) {
   const selling = energy.gridKw < 0;
   const gridKw = Math.abs(energy.gridKw);
-  // Selling: the roof's output is split into house + grid.
-  // Buying: the house's consumption is split into solar + grid.
+  // Selling: the roof's output splits into house + grid.
+  // Buying: the house's consumption splits into solar + grid.
   const whole = selling ? energy.solarKw : energy.houseKw;
   const sharedKw = Math.min(energy.solarKw, energy.houseKw);
   const sharedPct = percentOf(sharedKw, whole);
   return (
-    <section
-      aria-labelledby="meter-title"
-      className="border-[3px] border-grafite bg-papel px-6 pt-4 pb-5 max-sm:px-4"
-    >
+    <CyberPanel aria-labelledby="meter-title" className="rounded-panel px-7 py-5 sm:px-7 sm:py-5">
       <div className="flex items-end justify-between gap-6 max-sm:flex-col max-sm:items-start">
         <div>
           <h2 id="meter-title" className="font-semibold text-heading leading-tight">
@@ -27,26 +25,22 @@ export function EnergyMeter({ energy }: { energy: EnergySnapshot }) {
           </h2>
           <p className="mt-1 flex items-baseline gap-3">
             <span
-              className={`font-bold font-label text-reading tabular-nums leading-[0.95] ${
-                selling ? "text-verde-ink" : "text-laranja-ink"
+              className={`font-medium font-mono text-reading leading-none tracking-[-0.03em] ${
+                selling ? "text-lima-ink" : "text-laranja-ink"
               }`}
             >
               {kw(gridKw)}
             </span>
-            <span className="font-semibold text-heading">
+            <span className="font-semibold text-tinta-2">
               {selling ? "injetados na rede" : "vindos da rede"}
             </span>
           </p>
         </div>
         <dl className="grid grid-cols-2 gap-x-8 text-right max-sm:text-left">
-          <dt className="text-fio text-small">Telhado gera</dt>
-          <dt className="text-fio text-small">Casa consome</dt>
-          <dd className="font-label font-semibold text-display tabular-nums leading-none">
-            {kw(energy.solarKw)}
-          </dd>
-          <dd className="font-label font-semibold text-display tabular-nums leading-none">
-            {kw(energy.houseKw)}
-          </dd>
+          <dt className="font-semibold text-ciano-ink text-small">Telhado gera</dt>
+          <dt className="font-semibold text-small text-violeta">Casa consome</dt>
+          <dd className="font-mono text-display leading-tight">{kw(energy.solarKw)}</dd>
+          <dd className="font-mono text-display leading-tight">{kw(energy.houseKw)}</dd>
         </dl>
       </div>
       <div
@@ -58,27 +52,27 @@ export function EnergyMeter({ energy }: { energy: EnergySnapshot }) {
         }
         className="mt-4"
       >
-        <p className="mb-1 text-fio text-small">
+        <p className="mb-1.5 text-small text-tinta-suave">
           {selling
             ? `Para onde vão os ${kw(energy.solarKw)} do telhado`
             : `De onde vêm os ${kw(energy.houseKw)} da casa`}
         </p>
-        <div className="flex h-9 border-2 border-grafite font-semibold text-small">
+        <div className="flex h-9 overflow-hidden rounded-full border border-borda bg-papel font-semibold text-small">
           <div
-            className="flex items-center bg-modulo px-3 text-white"
+            className="flex items-center rounded-full bg-[linear-gradient(90deg,color-mix(in_oklab,var(--color-ciano)_38%,white),color-mix(in_oklab,var(--color-ciano)_22%,white))] px-4 text-ciano-ink"
             style={{ width: `${sharedPct}%` }}
           >
-            {selling ? `Casa ${kw(sharedKw)}` : `Telhado ${kw(sharedKw)}`}
+            {selling ? "casa" : "telhado"}&nbsp;<span className="font-mono">{kw(sharedKw)}</span>
           </div>
           <div
-            className={`flex flex-1 items-center justify-end border-grafite border-l-2 px-3 ${
-              selling ? "bg-verde-tint text-verde-ink" : "bg-laranja-tint text-laranja-ink"
+            className={`flex flex-1 items-center justify-end px-4 ${
+              selling ? "bg-lima-tint text-lima-ink" : "bg-laranja-tint text-laranja-ink"
             }`}
           >
-            {selling ? `Rede ${kw(gridKw)}` : `Rede ${kw(gridKw)}`}
+            rede&nbsp;<span className="font-mono">{kw(gridKw)}</span>
           </div>
         </div>
       </div>
-    </section>
+    </CyberPanel>
   );
 }
