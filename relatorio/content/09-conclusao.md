@@ -1,49 +1,34 @@
 # Considerações finais
 
-Este documento especificou o software de um sistema IoT para uma casa com
-geração solar, cobrindo os seis itens pedidos na Parte A: o problema e os
-usuários (Capítulo 2), o dicionário de dados (Capítulo 3), a arquitetura de
-integração do sensor à aplicação (Capítulo 4), doze regras de negócio no
-formato SE/ENTÃO (Capítulos 5 e 7), as telas (Capítulo 6) e a análise de
-riscos e resiliência (Capítulo 7). O Capítulo 8 organizou a especificação como
-plano de desenvolvimento, e o Capítulo 9 descreveu o protótipo.
+O documento especificou o software de um sistema IoT para uma casa com
+energia solar, cobrindo os seis itens da Parte A: problema e usuários,
+dicionário de dados, arquitetura do sensor à aplicação, doze regras SE/ENTÃO,
+telas e riscos. O Capítulo 6 também apresentou o protótipo visual da Parte B.
 
-Três decisões dão forma ao projeto. A primeira é que a segurança de vida não
-depende do software: o sensor de gás tem alarme próprio, e o sistema
-espalha o alarme pela casa, avisa e registra. A segunda é que tudo roda dentro de casa, de modo que a
-falta de internet só afeta o acesso remoto e as notificações. A terceira é que
-dados duvidosos nunca disparam ações: leituras reenviadas, atrasadas, nulas ou
-de dispositivos offline ficam no histórico, mas não acionam relés.
+Três decisões dão forma ao projeto. A segurança de vida não depende do
+software: o sensor de gás tem alarme próprio, e o sistema leva o alarme à
+casa toda, avisa e registra. Tudo roda dentro de casa, então a falta de
+internet só afeta o acesso remoto e as notificações. E dado duvidoso nunca
+aciona nada: leituras reenviadas, atrasadas, nulas ou de dispositivos
+offline vão para o histórico, mas não ligam relés.
 
-O projeto percorre a cadeia de valor estudada na disciplina
-[@ufjf2026cap5, p. 3]. A coleta combina leituras periódicas e eventos com
-*heartbeat* (Unidade 2); a validação aplica na entrada as dimensões de
-qualidade dos dados (Unidade 3); o armazenamento separa dados quentes, mornos
-e frios (Unidade 4); e a integração usa *pub/sub*, *store-and-forward* e
-regras SE/ENTÃO para entregar a informação certa à pessoa certa
-(Unidade 5).
+O projeto percorre a cadeia de valor da disciplina [@ufjf2026cap5, p. 3]: a
+coleta combina leituras periódicas e eventos com *heartbeat* (Unidade 2), a
+validação aplica as dimensões de qualidade na entrada (Unidade 3), o
+armazenamento separa dados quentes, mornos e frios (Unidade 4), e a
+integração usa *pub/sub*, armazenar e encaminhar e regras SE/ENTÃO para
+entregar a informação certa a quem precisa (Unidade 5).
 
-## Limitações
+O trabalho tem limites claros. O custo em reais é uma estimativa e não
+reproduz a conta, que inclui impostos, iluminação pública e regras de
+compensação próprias de cada distribuidora [@brasil2022lei14300]. Os
+limites e tempos das regras são valores iniciais, que só dados reais da casa
+vão calibrar. O *hub* único continua sendo um ponto de falha; o nobreak, o
+reinício automático e a validade curta dos comandos reduzem o impacto, mas
+não o eliminam. E tudo foi feito com dados simulados.
 
-- **Custo estimado, não faturado.** O cálculo em reais orienta a família, mas
-  não reproduz a conta: impostos, iluminação pública e as regras de
-  compensação dos créditos [@brasil2022lei14300] variam com a distribuidora.
-- **Limites ainda sem calibração.** Os tempos e limites das regras são
-  valores iniciais razoáveis; precisam ser ajustados com dados reais da casa
-  para evitar alertas demais ou de menos.
-- **Um único *hub*.** O *hub* é um ponto único de falha. O nobreak, o
-  reinício automático e a duração máxima dos comandos limitam o impacto, mas
-  não o eliminam.
-- **Sem dados reais.** A especificação e o protótipo usam dados simulados; a
-  medição real precisa de calibração.
-
-## Próximos passos
-
-1. Implementar o protótipo funcional do Capítulo 9, ligando as telas
-   do protótipo aos dados do middleware.
-2. Instalar o sistema em uma casa e calibrar os limites com algumas semanas
-   de dados.
-3. Usar a previsão do tempo para planejar as cargas adiáveis do dia seguinte,
-   em vez de reagir apenas à sobra do momento.
-4. Avaliar a tarifa branca, em que o preço da energia muda com o horário, como
-   mais um critério para as regras de cargas.
+O próximo passo é o protótipo funcional, ligando as mesmas telas a um
+simulador e ao middleware (Seção 6.8). Depois vêm a instalação numa casa,
+com algumas semanas de dados para calibrar as regras, o uso da previsão do
+tempo para planejar as cargas do dia seguinte e a tarifa branca, em que o
+preço muda com o horário, como mais um critério para as cargas.
