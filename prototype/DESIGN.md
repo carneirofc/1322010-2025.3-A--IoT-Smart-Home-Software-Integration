@@ -9,14 +9,14 @@ read like those objects, printed in black ink on white paper.
 
 ## Palette
 
-| Name            | Hex       | Role                                                                    |
-| --------------- | --------- | ----------------------------------------------------------------------- |
-| Placa           | `#F2F4F3` | Page ground: the grey-white plastic of the board. Never cream.          |
-| Grafite         | `#1C2321` | Ink, board frame, the one solid block per screen, active tab.           |
-| Fio             | `#56605C` | Secondary text and hairlines (5.9:1 on Placa).                          |
-| Módulo          | `#1F4E8C` | Photovoltaic-module blue: solar series, links, buttons, focus ring.     |
-| Bandeira        | see below | State only: verde normal, amarela attention, laranja warning, vermelha critical. |
-| Fase marrom     | `#8A5A12` | Grid exchange series in the chart (brown phase wire), never a state.    |
+| Name        | Hex       | Role                                                                             |
+| ----------- | --------- | -------------------------------------------------------------------------------- |
+| Placa       | `#F2F4F3` | Page ground: the grey-white plastic of the board. Never cream.                   |
+| Grafite     | `#1C2321` | Ink, board frame, the one solid block per screen, active tab.                    |
+| Fio         | `#56605C` | Secondary text and hairlines (5.9:1 on Placa).                                   |
+| Módulo      | `#1F4E8C` | Photovoltaic-module blue: solar series, links, buttons, focus ring.              |
+| Bandeira    | see below | State only: verde normal, amarela attention, laranja warning, vermelha critical. |
+| Fase marrom | `#8A5A12` | Grid exchange series in the chart (brown phase wire), never a state.             |
 
 Bandeira set (each pairs a solid with a dark ink for text on tinted ground):
 
