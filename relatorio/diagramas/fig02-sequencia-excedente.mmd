@@ -1,0 +1,21 @@
+%%{init: {"sequence": {"mirrorActors": false, "messageMargin": 18, "noteMargin": 6, "actorMargin": 30, "width": 120}, "themeVariables": {"fontSize": "15px"}}}%%
+sequenceDiagram
+  participant M as Medidor
+  participant B as Broker
+  participant W as Middleware
+  participant D as Banco
+  participant R as Relé bomba
+  participant U as Painel
+
+  M->>B: telemetry · −1 450 W
+  B->>W: entrega (QoS 1)
+  Note over W: valida e<br/>descarta duplicata
+  W->>D: grava leitura
+  Note over W: R1: sobra ≥ 950 W<br/>há 5 min
+  W->>D: comando pendente
+  W->>B: cmd · ligar · cmd_id
+  B->>R: comando
+  R->>B: state · ligado · cmd_id
+  B->>W: confirmação
+  W->>D: comando confirmado
+  W-->>U: "Bomba ligada (sobra)"

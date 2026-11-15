@@ -1,0 +1,29 @@
+%%{init: {"flowchart": {"curve": "basis", "nodeSpacing": 24, "rankSpacing": 36, "wrappingWidth": 230}, "themeVariables": {"fontSize": "16px"}}}%%
+flowchart TB
+  subgraph S1["1 · Sensores e gateway"]
+    direction LR
+    WIFI["Dispositivos Wi-Fi<br/>energy_meter_* · relay_* · siren_*<br/>gas_sensor_* · air_quality_*"]
+    INV["Inversor solar<br/>pv_inverter_*<br/>→ gateway local"]
+  end
+
+  BR(("2 · Broker MQTT<br/>Mosquitto<br/>QoS 1 · TLS · ACL · LWT"))
+
+  MW["<b>3 · Middleware</b><br/>validação · regras · comandos<br/>alertas · API REST + WebSocket"]
+
+  DB[("4 · Banco de dados<br/>TimescaleDB")]
+
+  subgraph S5["5 · Aplicações"]
+    direction LR
+    WEB["Painel web / PWA<br/>moradores"]
+    GF["Grafana<br/>instalador"]
+    PUSH["Push no celular"]
+  end
+
+  WIFI -- "MQTT" --> BR
+  INV -- "MQTT" --> BR
+  BR -- "telemetria" --> MW
+  MW -- "comandos" --> BR
+  MW -- "grava · consulta" --> DB
+  MW -- "WebSocket" --> WEB
+  DB -- "SQL" --> GF
+  MW -- "internet" --> PUSH
