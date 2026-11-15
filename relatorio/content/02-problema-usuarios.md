@@ -2,7 +2,7 @@
 
 ## Cenário
 
-Considera-se uma residência familiar alimentada em 220/127 V. A casa possui
+Considera-se uma residência familiar alimentada em 220/127 V. A casa possui
 geração solar fotovoltaica conectada à
 rede e participa do Sistema de Compensação de Energia Elétrica, no qual a
 energia injetada gera créditos que abatem o consumo [@brasil2022lei14300]. As
@@ -20,7 +20,8 @@ consumida da rede e o crédito da energia injetada, o que resulta em cinco
 problemas:
 
 1. **Ausência de visibilidade.** Não se sabe quais equipamentos mais pesam na
-   fatura nem em que horários o consumo é maior.
+   fatura nem em que horários o consumo é maior, e desperdícios como o
+   ar-condicionado regulado abaixo do necessário passam despercebidos.
 2. **Aproveitamento insuficiente da geração solar.** A bomba e a lavadora
    funcionam em qualquer horário, inclusive à noite, enquanto o excedente do
    meio-dia é injetado na rede.
