@@ -1,0 +1,9 @@
+%%{init: {"themeVariables": {"fontSize": "16px"}}}%%
+stateDiagram-v2
+  direction TB
+  [*] --> online: 1ª mensagem válida
+  online --> atrasado: silêncio > 2 × intervalo
+  atrasado --> online: mensagem válida
+  atrasado --> offline: silêncio > 3 × intervalo
+  online --> offline: LWT do broker
+  offline --> online: mensagem válida\n(encerra R10)
