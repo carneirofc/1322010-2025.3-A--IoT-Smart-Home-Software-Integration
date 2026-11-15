@@ -2,18 +2,20 @@
 
 ## Visão geral
 
-A Figura 1 mostra o fluxo completo nas cinco camadas pedidas no enunciado:
-sensores e gateway, protocolo e broker, middleware, banco de dados e
-aplicações. Todo o software roda num pequeno computador dentro da casa, o
-*hub*. A internet serve só para acesso remoto, notificações no celular e
-acerto do relógio; sem ela, a casa continua medindo, gravando e executando
-as regras (Seção 4.6).
+A Figura 1 apresenta o fluxo completo, organizado nas cinco camadas
+solicitadas no enunciado: sensores e gateway, protocolo e broker,
+middleware, banco de dados e aplicações. Todo o software é executado em um
+pequeno computador instalado na residência, o *hub*. A internet é utilizada
+apenas para acesso remoto, notificações no celular e sincronização do
+relógio; na sua ausência, o sistema mantém a medição, o armazenamento e a
+execução das regras (Seção 4.6).
 
-As cinco camadas detalham o modelo de quatro camadas da Unidade 1
-[@ufjf2026cap1, p. 5–6]. Sensores e atuadores são a percepção; Wi-Fi e MQTT,
-a rede; middleware e banco, o processamento; painel, Grafana e notificações,
-a aplicação. O *hub* é um nó de névoa (*fog*): processa os dados perto dos
-sensores em vez de mandá-los para uma nuvem distante
+As cinco camadas detalham o modelo de quatro camadas apresentado na
+Unidade 1 [@ufjf2026cap1, p. 5–6]: sensores e atuadores compõem a camada de
+percepção; Wi-Fi e MQTT, a camada de rede; middleware e banco de dados, a
+camada de processamento; painel, Grafana e notificações, a camada de
+aplicação. O *hub* atua como nó de névoa (*fog*), processando os dados
+próximo aos sensores, em vez de transmiti-los a uma nuvem remota
 [@ufjf2026cap1, p. 6; @ufjf2026cap2, p. 6].
 
 ![Arquitetura de integração, do sensor à aplicação.](fig01-arquitetura.png){width=95%}
@@ -22,65 +24,77 @@ Fonte: Elaborado pelo autor (2026).
 
 ## Sensores e gateway
 
-Os dispositivos da Tabela 1 publicam direto no broker por Wi-Fi. Estão dentro
-de casa, perto do roteador e ligados à tomada, o caso em que a Unidade 2
-indica o Wi-Fi [@ufjf2026cap2, p. 23]. Se perdem a conexão, guardam as
-leituras e as reenviam depois, com o instante original e a marca `buffered`.
-É a estratégia de armazenar e encaminhar (*store-and-forward*)
+Os dispositivos da Tabela 1 publicam diretamente no broker por Wi-Fi. Por
+estarem no interior da residência, próximos ao roteador e alimentados pela
+rede elétrica, enquadram-se no caso em que a Unidade 2 recomenda essa
+tecnologia [@ufjf2026cap2, p. 23]. Em caso de perda de conexão, os
+dispositivos armazenam as leituras e as retransmitem posteriormente, com o
+instante original e a marcação `buffered`, segundo a estratégia de
+armazenamento e encaminhamento (*store-and-forward*)
 [@ufjf2026cap2, p. 6; @ufjf2026cap5, p. 17], detalhada na Seção 7.3.
 
-Só o inversor solar não fala MQTT. Um gateway local o consulta a cada 30 s e
-republica as leituras no mesmo formato dos outros dispositivos, sem passar
-pela nuvem do fabricante [@ufjf2026cap2, p. 17].
+O inversor solar é a única exceção, por não suportar MQTT. Um gateway local
+consulta o inversor a cada 30 s e republica as leituras no mesmo formato dos
+demais dispositivos, sem depender da plataforma em nuvem do fabricante,
+desempenhando a função de conversão de protocolos atribuída ao gateway
+[@ufjf2026cap2, p. 17].
 
 ## Protocolo e broker
 
-O protocolo é o MQTT [@oasis2019mqtt5], no padrão publicador-assinante: os
-dispositivos publicam em tópicos e quem tem interesse assina, sem que o
-dispositivo saiba quem consome os dados
-[@ufjf2026cap2, p. 10–11; @ufjf2026cap5, p. 8–9]. Por isso dá para
-acrescentar um consumidor, como o Grafana, sem mexer em nenhum sensor. O
-HTTP ficou entre o painel e o middleware, onde o custo por requisição não
-pesa [@ufjf2026cap2, p. 12]. O broker é o Mosquitto, no próprio *hub*. Ele é
-o ponto único de falha do *pub/sub* [@ufjf2026cap5, p. 9]; se cair, os
-dispositivos guardam as leituras até ele voltar.
+Adotou-se o protocolo MQTT [@oasis2019mqtt5], baseado no padrão
+publicador-assinante (*pub/sub*): os dispositivos publicam em tópicos, e os
+componentes interessados os assinam, sem que o dispositivo precise conhecer
+os consumidores dos seus dados
+[@ufjf2026cap2, p. 10–11; @ufjf2026cap5, p. 8–9]. Esse desacoplamento
+permite incluir novos consumidores, como o Grafana, sem alterar os sensores.
+O HTTP foi reservado à comunicação entre o painel e o middleware, na qual o
+custo por requisição não onera os dispositivos [@ufjf2026cap2, p. 12]. O
+broker utilizado é o Mosquitto, executado no próprio *hub*. Por constituir o
+ponto único de falha do padrão *pub/sub* [@ufjf2026cap5, p. 9], sua
+indisponibilidade é compensada pelo armazenamento local das leituras nos
+dispositivos. A Tabela 4 resume os tópicos.
 
 : Tópicos MQTT.
 
-| Tópico | Quem publica | Retido | Conteúdo |
+| Tópico | Publicador | Retido | Conteúdo |
 |------------------------------|-----------------|:------:|----------------------------------------|
 | `home/{device}/telemetry` | dispositivo | não | leituras periódicas (Tabela 2) |
 | `home/{device}/event` | dispositivo | não | mudança de estado: gás, relé, alarme |
-| `home/{device}/status` | dispositivo e broker | sim | `online` ao conectar; `offline` publicado pelo broker (*Last Will*) |
+| `home/{device}/status` | dispositivo e broker | sim | `online` na conexão; `offline` publicado pelo broker (*Last Will*) |
 | `home/{device}/cmd` | middleware | não | comando com `cmd_id` e prazo de validade |
 | `home/{device}/state` | atuador | sim | estado atual e último `cmd_id` executado |
 
 Fonte: Elaborado pelo autor (2026).
 
-Todos os tópicos usam QoS 1, "pelo menos uma vez": a mensagem se repete até o
-broker confirmar e pode chegar duplicada. A apostila oferece duas saídas,
-deduplicar na ingestão ou usar QoS 2, mais pesado
-[@ufjf2026cap2, p. 11, 23]. Para as leituras, deduplicar basta (Seção 7.3).
-Para comandos críticos a apostila recomenda QoS 2 [@ufjf2026cap5, p. 16–17];
-aqui o mesmo efeito vem do `cmd_id`. O atuador ignora um comando que já
-executou e confirma o estado em `state`, então repetir a mensagem nunca
-repete a ação.
+Todos os tópicos utilizam QoS 1 ("pelo menos uma vez"), nível em que a
+mensagem é retransmitida até a confirmação do broker e pode, portanto, ser
+recebida em duplicidade. A apostila apresenta duas alternativas para esse
+problema: a deduplicação na ingestão ou o uso de QoS 2, de maior custo
+[@ufjf2026cap2, p. 11, 23]. Para as leituras, a deduplicação é suficiente
+(Seção 7.3). Para comandos críticos, a apostila recomenda QoS 2
+[@ufjf2026cap5, p. 16–17]; neste projeto, o mesmo efeito é obtido com o
+campo `cmd_id`. O atuador ignora comandos já executados e confirma o estado
+no tópico `state`, de modo que a retransmissão de uma mensagem não resulta
+na repetição da ação.
 
-Outros recursos do MQTT completam o desenho [@ufjf2026cap2, p. 11]. Ao
-conectar, cada dispositivo registra uma mensagem de despedida (*Last Will*)
-que o broker publica sozinho se a conexão cair; assim um dispositivo mudo
-aparece em segundos. O tópico `state` é retido, e quem se conecta recebe na
-hora o último estado de cada atuador. Já os comandos não são retidos e levam
-prazo de validade (*message expiry* do MQTT 5), para que um relé que volta
-depois de horas não execute uma ordem velha.
+Outros recursos do MQTT complementam o projeto [@ufjf2026cap2, p. 11]. Na
+conexão, cada dispositivo registra uma mensagem de desconexão (*Last Will*),
+publicada pelo broker caso a conexão seja interrompida sem encerramento
+regular, o que permite detectar em segundos um dispositivo sem comunicação.
+O tópico `state` é retido, de forma que todo novo assinante recebe
+imediatamente o último estado de cada atuador. Os comandos, por sua vez, não
+são retidos e possuem prazo de validade (*message expiry*, do MQTT 5), o que
+impede que um atuador reconectado horas depois execute um comando expirado.
 
-A segurança vem em camadas: TLS na porta 8883, uma credencial por
-dispositivo e uma lista de controle de acesso que só deixa cada um publicar
-nos próprios tópicos. A credencial única é a boa prática que a apostila
-aponta [@ufjf2026cap5, p. 15–16]: um relé invadido não consegue se passar
-pelo sensor de gás. Como os tópicos usam o identificador
-(`home/relay_pool_01/cmd`), um dispositivo novo só precisa de cadastro,
-usuário no broker e uma linha na lista. Uma mensagem do medidor fica assim:
+A segurança é organizada em camadas: TLS na porta 8883, credencial
+individual por dispositivo e lista de controle de acesso (ACL) que restringe
+cada dispositivo aos próprios tópicos. A credencial individual corresponde à
+boa prática indicada na apostila [@ufjf2026cap5, p. 15–16] e impede, por
+exemplo, que um relé comprometido se passe pelo sensor de gás. Como os
+tópicos incorporam o identificador do dispositivo (`home/relay_pool_01/cmd`),
+a inclusão de um novo dispositivo requer apenas o cadastro, o usuário no
+broker e uma entrada na ACL. O exemplo a seguir apresenta uma mensagem do
+medidor:
 
 ```json
 {
@@ -95,60 +109,69 @@ usuário no broker e uma linha na lista. Uma mensagem do medidor fica assim:
 
 ## Middleware
 
-O middleware é um serviço em Python (FastAPI). A ingestão assina `home/#` e
-valida cada mensagem (esquema, faixa, coerência e relógio); o que é inválido
-é rejeitado e guardado com o motivo (Seção 7.4). Em seguida o middleware
-atualiza o último estado conhecido do dispositivo, o gêmeo digital do
-Capítulo 3, e só então avalia as regras ligadas a ele
+O middleware é um serviço em Python, construído com o FastAPI. O módulo de
+ingestão assina o tópico `home/#` e valida cada mensagem quanto ao esquema,
+à faixa dos valores, à coerência entre campos e ao relógio; mensagens
+inválidas são rejeitadas e armazenadas com o motivo (Seção 7.4). Em seguida,
+o middleware atualiza o último estado conhecido do dispositivo, o gêmeo
+digital definido no Capítulo 3, e só então avalia as regras associadas a ele
 [@ufjf2026cap5, p. 6–7].
 
-O motor de regras roda a cada leitura e também a cada 10 s, para as regras
-que dependem de tempo ("há 5 minutos"). Ele não lê nem escreve nada: recebe
-fatos e devolve decisões, o que permite testá-lo sem broker nem banco. O
-despacho publica cada comando, espera em `state` a confirmação com o mesmo
-`cmd_id` e tenta até três vezes antes de abrir um alerta de atuador sem
+O motor de regras é executado a cada leitura e, adicionalmente, a cada 10 s,
+para as regras que dependem de duração ("há 5 minutos"). O motor não realiza
+operações de entrada e saída: recebe fatos e devolve decisões, o que permite
+testá-lo sem broker e sem banco de dados. O módulo de despacho publica cada
+comando, aguarda no tópico `state` a confirmação com o mesmo `cmd_id` e
+realiza até três tentativas antes de registrar um alerta de atuador sem
 resposta. As notificações são gravadas no banco antes do envio (padrão
-*outbox*) e, se a internet cair, saem quando ela voltar. Por fim, uma API
-REST atende consultas e comandos manuais, e um WebSocket empurra leituras e
-alertas ao painel, a combinação que a apostila indica para painéis que se
-atualizam sozinhos [@ufjf2026cap5, p. 12–14]. A Figura 2 mostra o caminho
-de uma leitura até uma ação, com a regra de sobra solar (R1).
+*outbox*) e, em caso de indisponibilidade da internet, são enviadas quando a
+conexão é restabelecida. Uma API REST atende às consultas e aos comandos
+manuais, e um canal WebSocket envia leituras e alertas ao painel, combinação
+indicada na apostila para painéis com atualização automática
+[@ufjf2026cap5, p. 12–14]. A Figura 2 ilustra o percurso de uma leitura até
+a ação correspondente, tomando como exemplo a regra de excedente solar (R1).
 
-![Sequência de uma leitura até o acionamento da bomba da piscina por sobra solar.](fig02-sequencia-excedente.png){width=100%}
+![Sequência de uma leitura até o acionamento da bomba da piscina por excedente solar.](fig02-sequencia-excedente.png){width=100%}
 
 Fonte: Elaborado pelo autor (2026).
 
 ## Banco de dados
 
-O banco é o PostgreSQL com a extensão TimescaleDB. Quase toda consulta do
-sistema é temporal ("consumo das últimas 24 h"), o padrão de escrever muito e
-ler por janelas de tempo para o qual os bancos de séries temporais são feitos
-[@ufjf2026cap4, p. 9–10]. As leituras ficam em tabelas particionadas por
-tempo (*hypertables*), comprimidas após uma semana e resumidas
-automaticamente por minuto, hora e dia (*continuous aggregates*); o
-histórico lê os resumos. Cadastro, alertas e comandos ficam no mesmo banco.
+O banco de dados adotado é o PostgreSQL com a extensão TimescaleDB. A maior
+parte das consultas do sistema é temporal ("consumo das últimas 24 h"), o
+que corresponde ao padrão de escrita intensa e leitura por janelas de tempo
+para o qual os bancos de séries temporais são projetados
+[@ufjf2026cap4, p. 9–10]. As leituras são armazenadas em tabelas
+particionadas por tempo (*hypertables*), comprimidas após uma semana e
+agregadas automaticamente por minuto, hora e dia (*continuous aggregates*);
+as consultas de histórico utilizam esses agregados. Os dados relacionais
+(cadastro, alertas e comandos) permanecem no mesmo banco.
 
-A retenção segue a divisão em dados quentes, mornos e frios
-[@ufjf2026cap4, p. 14–19]. A leitura que acabou de chegar é quente e dispara
-as regras. As leituras brutas de energia, cargas e ar ficam 90 dias, e os
-resumos por minuto, dois anos; são os dados mornos do painel e do Grafana. Os
-resumos por hora e por dia ficam sem prazo, para comparar um ano com outro.
-Eventos, alertas e comandos também nunca são apagados, porque o dado bruto
-deve ser preservado justamente quando há um evento a explicar
-[@ufjf2026cap4, p. 38–39]. As mensagens rejeitadas ficam 30 dias.
+A política de retenção segue a classificação em dados quentes, mornos e
+frios [@ufjf2026cap4, p. 14–19]. O dado quente é a leitura recém-recebida,
+que alimenta as regras. As leituras brutas de energia, cargas e qualidade do
+ar são mantidas por 90 dias, e os agregados por minuto, por dois anos;
+constituem os dados mornos utilizados pelo painel e pelo Grafana. Os
+agregados por hora e por dia são mantidos sem prazo, como dados frios, para
+comparações entre anos. Eventos, alertas e comandos também são preservados
+indefinidamente, pois o dado bruto deve ser mantido sempre que houver um
+evento a ser explicado [@ufjf2026cap4, p. 38–39]. As mensagens rejeitadas
+são mantidas por 30 dias.
 
 ## Aplicações e implantação
 
 O painel web (Capítulo 6) é a interface dos moradores e funciona no celular
-como aplicativo (PWA). O Grafana mostra o histórico ao instalador, com um
-usuário só de leitura no banco. As notificações *push* levam os alertas ao
-celular com o painel fechado, e os críticos de segurança vão também ao
-contato de emergência.
+como aplicativo instalável (PWA). O Grafana oferece ao instalador a análise
+do histórico, com acesso ao banco por um usuário somente de leitura. As
+notificações *push* entregam os alertas no celular mesmo com o painel
+fechado, e os alertas críticos de segurança são enviados também ao contato
+de emergência.
 
-Todos os serviços do *hub* são contêineres iniciados juntos por um arquivo
-*compose*, e o *hub* fica num nobreak para continuar registrando durante uma
-falta de energia. Sem internet, a casa mede, grava, executa as regras e
-mostra o painel na rede local; só as notificações esperam na fila, e o
-acesso de fora de casa, feito por VPN, fica indisponível. Manter os dados em
-casa também protege a privacidade: o consumo revela a rotina da família e é
-dado pessoal [@brasil2018lgpd].
+Todos os serviços do *hub* são executados em contêineres, iniciados em
+conjunto por um arquivo *compose*, e o *hub* é alimentado por um nobreak,
+para que o registro continue durante uma falta de energia. Sem internet, o
+sistema mantém medição, armazenamento, regras e painel na rede local; apenas
+as notificações aguardam na fila, e o acesso externo, realizado por VPN,
+fica indisponível. A permanência dos dados na residência protege também a
+privacidade, uma vez que o perfil de consumo revela a rotina da família e
+constitui dado pessoal [@brasil2018lgpd].
