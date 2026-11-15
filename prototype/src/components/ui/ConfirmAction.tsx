@@ -42,18 +42,18 @@ export function ConfirmAction({
           {label}
         </Button>
       </DialogTrigger>
-      <DialogContent size="sm" closeLabel="Fechar" className="rounded-[2px] border-2">
+      <DialogContent size="sm" closeLabel="Fechar" className="rounded-sub border">
         <DialogHeader>
-          <DialogTitle className="font-label font-bold text-title leading-tight">
-            {title}
-          </DialogTitle>
-          <DialogDescription className="text-body text-fio">{description}</DialogDescription>
+          <DialogTitle className="font-semibold text-title leading-tight">{title}</DialogTitle>
+          <DialogDescription className="text-body text-tinta-suave">
+            {description}
+          </DialogDescription>
         </DialogHeader>
         {details.length > 0 ? (
           <DialogBody>
             <ul className="space-y-1.5 text-body">
               {details.map((line) => (
-                <li key={line} className="border-linha border-l-[3px] pl-3">
+                <li key={line} className="rounded-control bg-ui-bg-info px-3 py-1.5">
                   {line}
                 </li>
               ))}

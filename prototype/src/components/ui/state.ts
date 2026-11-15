@@ -1,36 +1,36 @@
 import type { Severity, Tone } from "@/mocks/types";
 
-/** Bandeira colours: text ink, solid swatch, tinted ground and left edge per state. */
+/** State colours: ink for text, solid for dots, tint for grounds, edge for rows. */
 export const TONE_INK: Record<Tone, string> = {
-  ok: "text-verde-ink",
-  attention: "text-amarela-ink",
+  ok: "text-lima-ink",
+  attention: "text-ambar-ink",
   warning: "text-laranja-ink",
-  critical: "text-vermelha-ink",
-  neutral: "text-fio",
+  critical: "text-vermelho-ink",
+  neutral: "text-tinta-suave",
 };
 
 export const TONE_SOLID: Record<Tone, string> = {
-  ok: "bg-verde",
-  attention: "bg-amarela",
+  ok: "bg-lima",
+  attention: "bg-ambar",
   warning: "bg-laranja",
-  critical: "bg-vermelha",
-  neutral: "bg-linha-forte",
+  critical: "bg-vermelho",
+  neutral: "bg-borda",
 };
 
 export const TONE_TINT: Record<Tone, string> = {
-  ok: "bg-verde-tint",
-  attention: "bg-amarela-tint",
+  ok: "bg-lima-tint",
+  attention: "bg-ambar-tint",
   warning: "bg-laranja-tint",
-  critical: "bg-vermelha-tint",
-  neutral: "bg-placa",
+  critical: "bg-vermelho-tint",
+  neutral: "bg-nevoa",
 };
 
 export const TONE_EDGE: Record<Tone, string> = {
-  ok: "border-l-verde",
-  attention: "border-l-amarela",
+  ok: "border-l-lima",
+  attention: "border-l-ambar",
   warning: "border-l-laranja",
-  critical: "border-l-vermelha",
-  neutral: "border-l-linha",
+  critical: "border-l-vermelho",
+  neutral: "border-l-borda",
 };
 
 export const SEVERITY_TONE: Record<Severity, Exclude<Tone, "ok" | "neutral">> = {

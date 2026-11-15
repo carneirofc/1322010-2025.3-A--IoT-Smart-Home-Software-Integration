@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { BreakerTabs, type TabLink } from "@/components/shell/BreakerTabs";
 import { Header } from "@/components/shell/Header";
+import { NavTabs, type TabLink } from "@/components/shell/NavTabs";
 import { openAlertCount, scenario } from "@/mocks/scenario";
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
@@ -31,9 +31,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
       <body>
-        <header className="border-grafite border-b-[3px] bg-papel">
+        <header className="relative border-borda border-b bg-papel/70 backdrop-blur-sm">
           <Header hub={scenario.hub} now={scenario.now} />
-          <BreakerTabs tabs={tabs} />
+          <NavTabs tabs={tabs} />
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 -bottom-px h-px bg-[linear-gradient(90deg,transparent,var(--color-ciano)_20%,var(--color-rosa)_80%,transparent)]"
+          />
         </header>
         {children}
       </body>
