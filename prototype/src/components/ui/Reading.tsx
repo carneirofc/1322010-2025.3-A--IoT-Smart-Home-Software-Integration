@@ -73,7 +73,9 @@ export function Reading({
           <Digits text={group.text} />
         </span>
       ))}
-      <span className={`ml-[0.18em] font-sans font-semibold text-[0.5em] ${unitClassName}`}>
+      <span
+        className={`ml-[0.18em] font-sans font-semibold text-[length:max(0.5em,13px)] ${unitClassName}`}
+      >
         {unit}
       </span>
     </span>
