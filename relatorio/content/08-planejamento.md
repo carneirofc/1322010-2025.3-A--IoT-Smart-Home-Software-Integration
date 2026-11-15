@@ -1,59 +1,70 @@
 # Planejamento do software
 
-Este capítulo organiza a especificação dos capítulos anteriores como plano de
-desenvolvimento: requisitos funcionais, decisões de tecnologia e a
-rastreabilidade entre o problema e a solução.
+Este capítulo organiza a especificação como plano de desenvolvimento.
 
 ## Requisitos funcionais
 
-: Requisitos funcionais.
+Os doze requisitos funcionais, com as regras e telas que os atendem, são:
 
-| ID | Requisito | Regras | Tela |
-|------|------------------------------------------------------------------|--------------|------------------|
-| RF1 | Mostrar consumo, geração e troca com a rede quase em tempo real (atraso de até 10 s) | — | Visão geral |
-| RF2 | Calcular o custo do dia e do mês com a tarifa e a bandeira configuradas, e projetar a conta | R4 | Visão geral |
-| RF3 | Ligar cargas adiáveis com a sobra solar e garantir o compromisso diário de cada uma | R1, R2 | Cargas |
-| RF4 | Desligar cargas de menor prioridade antes que o disjuntor geral desarme, e religá-las depois | R3 | Cargas |
-| RF5 | Permitir o controle manual de cada carga, com prioridade sobre a automação até o fim do dia | árbitro (Figura 3) | Cargas |
-| RF6 | Detectar falha e queda de produção do sistema solar | R5 | Alertas |
-| RF7 | Orientar o uso do ar-condicionado, sem controlá-lo | R6, R7 | Segurança e saúde, Alertas |
-| RF8 | Ao detectar gás, acionar o alarme da casa, avisar todos os moradores e o contato de emergência, e suspender acionamentos | R8 | Segurança e saúde, Alertas |
-| RF9 | Acompanhar o CO~2~ e avisar quando o ar precisa ser renovado | R9 | Segurança e saúde |
-| RF10 | Acompanhar a saúde dos dispositivos e a qualidade do fornecimento de energia | R10 a R12 | Segurança e saúde |
-| RF11 | Gerir o ciclo de vida dos alertas: abrir, notificar, repetir, reconhecer e encerrar | todas | Alertas |
-| RF12 | Guardar o histórico com retenção definida e oferecer análise detalhada ao instalador | — | Grafana |
+- RF1: mostrar consumo, geração e troca com a rede com atraso de até 10 s
+  (Visão geral).
+- RF2: calcular o custo do dia e do mês e projetar a conta (R4, Visão
+  geral).
+- RF3: ligar cargas adiáveis com a sobra solar e cumprir o compromisso do
+  dia (R1 e R2, Cargas).
+- RF4: desligar cargas antes que o disjuntor geral desarme e religá-las
+  depois (R3, Cargas).
+- RF5: permitir o controle manual de cada carga, acima da automação até o
+  fim do dia (árbitro, Cargas).
+- RF6: detectar falha e queda de geração do sistema solar (R5, Alertas).
+- RF7: orientar o uso do ar-condicionado sem controlá-lo (R6 e R7).
+- RF8: diante de gás, acionar o alarme, avisar moradores e contato de
+  emergência e suspender acionamentos (R8).
+- RF9: acompanhar o CO~2~ e avisar quando renovar o ar (R9).
+- RF10: acompanhar a saúde dos dispositivos e a tensão da rede (R10 a R12).
+- RF11: gerir o ciclo de vida dos alertas: abrir, avisar, repetir,
+  reconhecer e encerrar (Alertas).
+- RF12: guardar o histórico com retenção definida e oferecer análise ao
+  instalador (Grafana).
 
-Fonte: Elaborado pelo autor (2026).
-
-Os requisitos não funcionais estão na Tabela 13 (Seção 7.1).
+Os não funcionais estão na Seção 7.1.
 
 ## Decisões de tecnologia
 
-: Decisões de tecnologia e alternativas consideradas.
+O protocolo é o MQTT, e não HTTP com consulta periódica nem CoAP. O
+publicador-assinante desacopla dispositivos e aplicações, e QoS, mensagem
+retida e *Last Will* resolvem entrega, estado e detecção de queda; o HTTP
+pesa mais por mensagem, e o CoAP foi feito para redes restritas que a casa
+não tem [@oasis2019mqtt5; @ufjf2026cap2, p. 10–13].
 
-| Decisão | Escolha | Alternativas | Motivo |
-|------------------------|----------------------------|------------------------|------------------------------------------------|
-| Protocolo | MQTT | HTTP com consulta periódica; CoAP | Publicar/assinar desacopla dispositivos e aplicação; QoS, mensagem retida e LWT resolvem entrega, estado e detecção de queda; o HTTP pesa mais por mensagem e o CoAP visa redes restritas que a casa não tem [@oasis2019mqtt5; @ufjf2026cap2, p. 10–13] |
-| Onde roda | *Hub* local na casa (névoa) | Nuvem | Funciona sem internet (RNF1), responde mais rápido e mantém os dados na casa (RNF6) [@ufjf2026cap1, p. 6] |
-| Middleware | Python com FastAPI | Node-RED | Regras em código podem ser testadas e versionadas; o Node-RED, usado na apostila para organizar o fluxo entre broker e banco [@ufjf2026cap2, p. 20–22], é bom para protótipos, mas regras com tempo e prioridade ficam difíceis de testar |
-| Banco de dados | PostgreSQL + TimescaleDB | InfluxDB; SQLite | Séries temporais e dados relacionais (alertas, comandos, cadastro) no mesmo banco, com SQL, retenção, compressão e resumos automáticos [@ufjf2026cap4, p. 9–10] |
-| Interface | Painel web responsivo (PWA), atualizado por WebSocket | Aplicativo nativo; painel que consulta a cada X segundos | Uma base de código para celular e computador, sem loja de aplicativos; o servidor empurra a leitura nova [@ufjf2026cap5, p. 12–14] |
-| Histórico | Grafana | Gráficos no painel | O painel mostra o essencial; análises detalhadas ficam com o Grafana, já pronto para séries temporais |
-| Implantação | Contêineres com *compose* | Instalação direta | Serviços isolados, reinício automático (RNF7), a mesma configuração no *hub* e no ambiente de testes |
+O software roda num *hub* local, e não na nuvem, para funcionar sem internet
+(RNF1), responder mais rápido e manter os dados em casa (RNF6)
+[@ufjf2026cap1, p. 6]. O middleware é escrito em Python com FastAPI. O
+Node-RED, que a apostila usa para ligar broker e banco
+[@ufjf2026cap2, p. 20–22], serve bem a protótipos, mas regras com tempo e
+prioridade ficam difíceis de testar e versionar fora do código.
 
-Fonte: Elaborado pelo autor (2026).
+O banco é PostgreSQL com TimescaleDB, em vez de InfluxDB ou SQLite, porque
+guarda as séries temporais e os dados relacionais (alertas, comandos,
+cadastro) no mesmo lugar, com SQL, retenção, compressão e resumos
+automáticos [@ufjf2026cap4, p. 9–10]. A interface é um painel web (PWA)
+atualizado por WebSocket, uma só base de código para celular e computador,
+sem loja de aplicativos [@ufjf2026cap5, p. 12–14]. O Grafana cuida do
+histórico detalhado, para o painel mostrar só o essencial. Tudo roda em
+contêineres com *compose*, que isolam os serviços, os reiniciam sozinhos
+(RNF7) e repetem a mesma configuração no *hub* e no ambiente de testes.
 
 ## Rastreabilidade
 
-A Tabela 18 liga cada problema do Capítulo 2 aos requisitos, às regras, às
+A Tabela 6 liga cada problema da Seção 2.2 aos requisitos, às regras, às
 telas e às falhas tratadas no Capítulo 7.
 
 : Rastreabilidade do problema à solução.
 
-| Problema (Seção 2.2) | Requisitos | Regras | Telas | Falhas tratadas (Tabela 14) |
+| Problema (Seção 2.2) | Requisitos | Regras | Telas | Falhas tratadas (Tabela 5) |
 |------------------------------|------------|----------------|-------------------------|----------------------------------------|
 | 1. Não há visibilidade | RF1, RF7, RF12 | R6, R7 | Visão geral | dados nulos, corrompidos, incoerentes e duplicados |
-| 2. Sobra solar mal aproveitada | RF3, RF4, RF5 | R1 a R3 | Cargas | atuador sem resposta, *hub* desligado com carga ligada |
+| 2. Sobra solar desperdiçada | RF3, RF4, RF5 | R1 a R3 | Cargas | atuador sem resposta, *hub* desligado com carga ligada |
 | 3. Falha solar despercebida | RF6, RF10 | R5, R10 | Alertas | sensor offline, falta de energia |
 | 4. Conta surpresa | RF2 | R4 | Visão geral | contador de energia que regride |
 | 5. Riscos não chegam a quem está fora | RF8 a RF11 | R8 a R12 | Segurança e saúde, Alertas | perda de internet, Wi-Fi ou broker |
