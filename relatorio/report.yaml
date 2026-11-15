@@ -65,8 +65,10 @@ report:
 # ---------------------------------------------------------------------------
 #  Pretextual lists (PDF). The summary (SUMÁRIO) is always generated.
 # ---------------------------------------------------------------------------
-lof: true
-lot: true
+# Lists are emitted by template/filters/ufjf-front.lua, before the summary
+# (ABNT NBR 14724 order: figures, tables, then SUMÁRIO).
+lof: false
+lot: false
 
 mainfont: TeX Gyre Termes
 monofont: Liberation Mono

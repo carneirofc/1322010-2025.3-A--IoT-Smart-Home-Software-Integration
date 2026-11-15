@@ -128,6 +128,10 @@ local function latex_front(r)
   add('\\renewcommand{\\listtablename}{LISTA DE TABELAS}')
   add('\\renewcommand{\\figurename}{Figura}')
   add('\\renewcommand{\\tablename}{Tabela}')
+  -- ABNT NBR 14724: lists of figures and tables come before the summary.
+  add('\\listoffigures')
+  add('\\listoftables')
+  add('\\clearpage')
 
   return pandoc.RawBlock('latex', table.concat(L, '\n'))
 end
