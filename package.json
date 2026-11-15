@@ -1,5 +1,5 @@
 {
-  "name": "ufjf-iot-projeto-integrador",
+  "name": "iot-smart-home-software-integration",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@12.17.0",
