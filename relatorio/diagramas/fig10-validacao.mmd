@@ -2,9 +2,9 @@
 flowchart TB
   M["Mensagem recebida"] --> V{"JSON, esquema,<br/>dispositivo × tópico<br/>e instante válidos?"}
   V -- "não" --> RJ["Rejeita e guarda<br/>com o motivo"]
-  V -- "sim" --> D{"Já recebida?<br/>(device, ts)"}
+  V -- "sim" --> D{"Já recebida?<br/>(device, tópico, ts)"}
   D -- "sim" --> DD["Descarta a duplicata"]
-  D -- "não" --> F["Campo nulo, NaN ou fora<br/>da faixa vira NULL (parcial);<br/>instante no futuro usa<br/>o da chegada (relogio)"]
+  D -- "não" --> F["Campo nulo, NaN ou fora<br/>da faixa vira NULL (parcial);<br/>instante futuro: grava<br/>a chegada (relogio)"]
   F --> K["Confere P ≈ V·I·FP e o<br/>contador de energia<br/>(inconsistente)"]
   K --> G["Grava com as marcas<br/>de qualidade"]
   G --> R{"Tempo real?<br/>não buffered e<br/>atraso < 30 s"}

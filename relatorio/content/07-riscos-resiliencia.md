@@ -1,3 +1,9 @@
+```{=latex}
+% Summary: start chapter 7 on the summary's second page, so no chapter's
+% entries are split across the page break.
+\addtocontents{toc}{\protect\clearpage}
+```
+
 # Análise de riscos e resiliência
 
 ## Requisitos não funcionais
@@ -13,11 +19,12 @@ respectivo método de verificação, são:
 
 - RNF1, operação sem internet: medição, armazenamento, regras e painel local
   permanecem em funcionamento com a internet desconectada.
-- RNF2, tempo de aviso: alerta crítico exibido no painel em até 5 s e
-  notificação *push* em até 30 s, medidos a partir do evento.
+- RNF2, tempo de aviso: alerta crítico exibido no painel em até 5 s e
+  notificação *push* em até 30 s, medidos a partir do evento, com mensagem
+  de texto (SMS) como canal redundante para os alertas críticos.
 - RNF3, preservação de dados em interrupções curtas: nenhuma leitura é
-  perdida em interrupções de até 1 h, o que se verifica interrompendo o
-  broker por 10 minutos e contando as leituras recebidas.
+  perdida em interrupções de até 1 h, o que se verifica interrompendo o
+  broker por 70 minutos e contando as leituras recebidas.
 - RNF4, integridade: nenhum registro duplicado e nenhuma ação baseada em dado
   inválido, atrasado ou retransmitido, o que se verifica por testes do
   middleware.
@@ -44,7 +51,7 @@ Fonte: Elaborado pelo autor (2026).
 
 ## Falhas e tratamento
 
-A Tabela 5 reúne as falhas previstas, incluindo as quatro citadas no
+A Tabela 6 reúne as falhas previstas, incluindo as quatro citadas no
 enunciado (sensor offline, perda de conexão com a internet, retransmissão e
 dados nulos ou corrompidos) e outras que o software também deve tratar.
 
@@ -55,14 +62,15 @@ dados nulos ou corrompidos) e outras que o software também deve tratar.
 | Sensor offline | *Last Will* ou ausência de mensagens por mais de 3 × o intervalo | Alerta R10. As regras dependentes do sensor são suspensas, pois dado desconhecido não é tratado como normal. |
 | Perda de conexão com a internet | Falha no envio de notificação *push* | O funcionamento local não se altera. As notificações aguardam na fila, e o painel indica a ausência de internet. |
 | Perda do Wi-Fi ou do broker | O dispositivo não consegue publicar | O dispositivo armazena ao menos 1 h de leituras e as retransmite com `buffered`. |
-| Retransmissão e duplicatas | Par `(device, ts)` já recebido | A chave única do banco descarta a cópia, que é apenas contabilizada. |
+| Retransmissão e duplicatas | Trio `(device, tópico, ts)` já recebido | A chave única do banco descarta a cópia, que é apenas contabilizada. |
 | Dados atrasados ou retransmitidos | `buffered` ou atraso superior a 30 s | São armazenados no histórico, mas não disparam regras, pois a situação descrita pode ter mudado. |
 | Dados nulos | Campo ausente ou `null` | O campo permanece nulo e a leitura é marcada como `parcial`; regras com variável nula não mudam de estado. |
-| Dados corrompidos | JSON inválido, esquema incorreto, valor fora da faixa, NaN, instante futuro | A mensagem inválida é rejeitada e armazenada com o motivo; o campo fora da faixa é anulado (Figura 10). |
+| Dados corrompidos | JSON inválido, esquema incorreto, valor fora da faixa, NaN | A mensagem inválida é rejeitada e armazenada com o motivo; o campo fora da faixa é anulado (Figura 10). |
+| Relógio adiantado | Instante no futuro | A leitura é gravada com o instante de chegada e a marca `relogio`; a chave conserva o instante enviado (Figura 10). |
 | Dados incoerentes | Potência divergente de V·I·FP; contador decrescente | São armazenados com a marca `inconsistente` e excluídos do cálculo de custo. |
 | Atuador sem resposta | Ausência de confirmação do `cmd_id` em 10 s | Até 3 tentativas; em seguida, alerta R11. |
-| *Hub* desligado com carga ligada | O relé não recebe a renovação do comando | O comando automático tem validade máxima de 15 min; sem renovação, o relé desliga a carga, exceto a lavadora em ciclo. |
-| Falta de energia na residência | Tensão nula em todas as fases | O *hub* permanece no nobreak e registra a ocorrência (R12); a geração nula não dispara a R5. |
+| *Hub* desligado com carga ligada | O relé não recebe a renovação do comando | O comando automático tem validade máxima de 15 min; sem renovação, o relé desliga a carga, exceto a lavadora em ciclo. A renovação continua durante a R8. |
+| Falta de energia na residência | Silêncio simultâneo dos dispositivos alimentados pela rede, confirmado pelo nobreak | O *hub* e o roteador permanecem no nobreak e registram a ocorrência (R12); a R10 não notifica dispositivo a dispositivo, e a geração nula não dispara a R5. |
 
 Fonte: Elaborado pelo autor (2026).
 
@@ -74,7 +82,7 @@ A perda de conexão é tratada pela estratégia de armazenamento e
 encaminhamento, na qual o dispositivo armazena as leituras e as retransmite
 quando a conexão é restabelecida [@ufjf2026cap5, p. 17]. A apostila aponta
 três riscos dessa estratégia [@ufjf2026cap5, p. 18], tratados no projeto da
-seguinte forma. Quanto à memória limitada, a fila comporta ao menos 1 h de
+seguinte forma. Quanto à memória limitada, a fila comporta ao menos 1 h de
 leituras, descarta as mais antigas quando cheia e prioriza as mudanças de
 estado. Quanto ao relógio incorreto, que comprometeria a série temporal, os
 dispositivos sincronizam o relógio por NTP, e leituras com instante futuro
@@ -86,8 +94,12 @@ leituras marcadas como `buffered` não disparam regras.
 
 A validação aplica, na entrada, as dimensões de qualidade de dados da
 Unidade 3 [@ufjf2026cap3, p. 5]. A validade é verificada pela faixa de cada
-campo (Tabela 2). A unicidade é garantida pela chave `(device, ts)`, aplicada
-na ingestão conforme recomenda a apostila [@ufjf2026cap3, p. 6–7]. A
+campo (Tabela 2). A unicidade é garantida pela chave `(device, tópico, ts)`,
+aplicada na ingestão conforme recomenda a apostila [@ufjf2026cap3, p. 6–7].
+O tópico integra a chave porque um evento e uma leitura periódica do mesmo
+dispositivo podem ter o mesmo instante; na leitura marcada como `relogio`, a
+chave conserva o instante enviado, e o de chegada é gravado à parte, para que
+uma retransmissão continue reconhecível. A
 completude trata o campo ausente como nulo e a ausência de mensagens como
 mudança de estado do dispositivo. A consistência compara a potência com o
 produto V·I·FP e exige que os contadores de energia não decresçam. A
@@ -114,11 +126,15 @@ raro, é preservado, pois pode corresponder justamente ao evento de interesse.
 Esse critério segue a orientação da Unidade 3 de avaliar primeiro a
 possibilidade física e só depois a estatística: o *outlier* impossível torna-se
 dado faltante, e o possível é candidato a evento [@ufjf2026cap3, p. 8]. Um
-pico de 46 A na entrada, por exemplo, é a condição que dispara a R3, e uma
-tensão de 0 V caracteriza a falta de energia tratada pela R12. O middleware
+pico de 46 A na entrada, por exemplo, é a condição que dispara a R3, e uma
+tensão de 105 V caracteriza o fornecimento crítico tratado pela R12. O middleware
 também não preenche lacunas, pois a imputação de valores é uma técnica de
 análise [@ufjf2026cap3, p. 10–16], e um valor estimado na entrada poderia
 disparar indevidamente uma regra.
+
+```{=latex}
+\FloatBarrier
+```
 
 ## Regras de resiliência
 
@@ -128,6 +144,7 @@ avaliadas pelo motor descrito no Capítulo 5.
 **R10 — Dispositivo offline**
 
 > **SE** o dispositivo d passou ao estado offline (Figura 9)\
+> **E** não há falta de energia em curso (R12)\
 > **ENTÃO** notificar o instalador e o morador responsável, com severidade
 > crítica se d for um `gas_sensor_*` ou `siren_*`\
 > **E** suspender as regras dependentes de d até o restabelecimento.
@@ -135,17 +152,26 @@ avaliadas pelo motor descrito no Capítulo 5.
 **R11 — Atuador sem resposta**
 
 > **SE** um comando permaneceu sem confirmação após 3 tentativas\
-> **ENTÃO** registrar um aviso e colocar a carga em modo manual até a verificação pelo morador.
+> **ENTÃO** registrar um aviso e bloquear a automação da carga até a
+> verificação pelo morador.
+
+O bloqueio difere do modo manual, que expira no fim do dia: a carga
+permanece fora da automação até que o morador confirme o funcionamento do
+relé.
 
 **R12 — Qualidade do fornecimento de energia**
 
-> **SE** a tensão de uma fase permanece fora de 117 a 133 V por ≥ 60 s\
+> **SE** a tensão de uma fase permanece fora de 117 a 133 V por ≥ 60 s\
 > **ENTÃO** registrar o evento e emitir um aviso, com severidade crítica abaixo
-> de 110 V ou acima de 135 V.\
-> **SE** a tensão é nula em todas as fases\
-> **ENTÃO** registrar o início da falta de energia e, no restabelecimento,
-> notificar a duração.
+> de 110 V ou acima de 135 V.\
+> **SE** todos os dispositivos alimentados pela rede deixam de publicar ao
+> mesmo tempo **E** o nobreak informa operação na bateria\
+> **ENTÃO** registrar o início da falta de energia, suspender a R10 para
+> esses dispositivos e, no restabelecimento, notificar a duração.
 
-As faixas adotadas são as definidas pela ANEEL para a tensão nominal de
-127 V em regime permanente [@aneel2021prodist8]. O histórico desses eventos
+Na falta de energia, o medidor também fica sem alimentação e não chega a
+publicar a tensão nula; por isso, o evento é reconhecido pelo silêncio
+simultâneo dos dispositivos e pelo nobreak do *hub*, que informa a operação
+na bateria. As faixas adotadas são as definidas pela ANEEL para a tensão nominal de
+127 V em regime permanente [@aneel2021prodist8]. O histórico desses eventos
 subsidia eventuais reclamações do morador junto à distribuidora.
