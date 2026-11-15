@@ -63,6 +63,31 @@
   --container-page: 1024px;
 }
 
+/*
+ * Colour utilities the library's components use (bg-ui-bg-card, bg-panel…),
+ * mapped onto the variables in ui-library.css. Declared here, after the
+ * palette reset above, so the reset does not clear them.
+ */
+@theme inline {
+  --color-panel: var(--panel-white);
+  --color-ui-ink: var(--ui-ink);
+  --color-ui-ink-strong: var(--ui-ink-strong);
+  --color-ui-ink-title: var(--ui-ink-title);
+  --color-ui-ink-accent: var(--ui-ink-accent);
+  --color-ui-ink-secondary: var(--ui-ink-secondary);
+  --color-ui-ink-subtle: var(--ui-ink-subtle);
+  --color-ui-bg: var(--ui-bg);
+  --color-ui-bg-soft: var(--ui-bg-soft);
+  --color-ui-bg-muted: var(--ui-bg-muted);
+  --color-ui-bg-active: var(--ui-bg-active);
+  --color-ui-bg-card: var(--ui-bg-card);
+  --color-ui-bg-info: var(--ui-bg-info);
+  --color-ui-overlay-soft: var(--ui-overlay-soft);
+  --color-ui-overlay-strong: var(--ui-overlay-strong);
+  --color-ui-faint: var(--ui-border-faint);
+  --shadow-ui-strong: var(--ui-shadow-strong);
+}
+
 @layer base {
   html {
     font-size: var(--text-body);
