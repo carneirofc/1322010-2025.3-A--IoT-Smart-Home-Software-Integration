@@ -97,10 +97,10 @@ tinted cyan with the strong gradient border).
 ```
 ╭─ CyberPanel ───────────────────────────────────────────────────╮
 │ Gás na cozinha: não detectado │ Alarme da casa: desligado [Testar alarme]
-│ 2 avisos abertos: CO₂ no quarto, ar-condicionado               │
+│ 2 alertas abertos de saúde: CO₂ no quarto, ar-condicionado     │
 ╰────────────────────────────────────────────────────────────────╯
-╭ Ar do quarto 1 240 ppm ─╮ ╭ Ar-condicionado ──╮ ╭ Rede elétrica ╮
-╭ Dispositivos 8 | 7 online | 1 atrasado [copiar id] | contadores ╮
+╭ Ar do quarto 1 240 ppm ───────╮ ╭ Ar-condicionado do quarto ────╮
+╭ Rede elétrica ─╮ ╭ Dispositivos 8 | 7 online | 1 atrasado [Copiar id] ╮
 ```
 
 **Alertas**: the hero is the open alerts; closed ones recede.
@@ -110,7 +110,7 @@ tinted cyan with the strong gradient border).
 ╭─ CyberPanel: open ─────────────────────────────────────────────╮
 │ Aviso  R9  CO₂ no quarto  1 240 ppm há 20 min  aberto 14:40 [Reconhecer]
 ╰────────────────────────────────────────────────────────────────╯
-  Encerrados: plain rows on the wash, [Ver comandos] [Linha do tempo → Dialog]
+  Encerrados: plain rows on the wash, [Ver comandos] [Linha do tempo] (opens a Dialog)
 ```
 
 ## Principles
