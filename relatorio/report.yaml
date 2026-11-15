@@ -40,8 +40,8 @@ report:
     aplicação, doze regras de negócio no formato SE/ENTÃO, os protótipos das
     telas e a análise de riscos e resiliência. O sensor de gás tem alarme
     local próprio; o software aciona o alarme da casa e acrescenta avisos,
-    histórico e ações secundárias. O protótipo visual reúne as telas, em páginas HTML
-    estáticas, e os diagramas do sistema. O projeto se apoia nos conceitos das
+    histórico e ações secundárias. O protótipo visual reúne as telas, em uma aplicação
+    Next.js com dados simulados, e os diagramas do sistema. O projeto se apoia nos conceitos das
     cinco unidades da disciplina: coleta, qualidade, armazenamento e
     integração de dados de sensores.
   palavras-chave: [Internet das Coisas, Automação residencial, Eficiência energética, Energia solar fotovoltaica, MQTT]
@@ -60,8 +60,8 @@ report:
     prototypes and the risk and resilience analysis. The gas sensor has its own
     local alarm; the software triggers the house alarm and adds notifications,
     history and secondary actions.
-    The visual prototype comprises the screens, as static HTML pages, and the
-    system diagrams. The design builds on the five units of the course: sensor
+    The visual prototype comprises the screens, as a Next.js app with mock
+    data, and the system diagrams. The design builds on the five units of the course: sensor
     data collection, quality, storage and integration.
   keywords: [Internet of Things, Home automation, Energy efficiency, Solar photovoltaics, MQTT]
 

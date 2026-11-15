@@ -40,7 +40,7 @@ regras SE/ENTÃO para entregar a informação certa à pessoa certa
 ## Próximos passos
 
 1. Implementar o protótipo funcional do Capítulo 9, ligando as telas
-   estáticas aos dados do middleware.
+   do protótipo aos dados do middleware.
 2. Instalar o sistema em uma casa e calibrar os limites com algumas semanas
    de dados.
 3. Usar a previsão do tempo para planejar as cargas adiáveis do dia seguinte,
