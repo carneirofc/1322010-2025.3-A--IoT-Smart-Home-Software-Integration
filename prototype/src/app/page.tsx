@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DayChartCard } from "@/components/DayChartCard";
 import { EnergyFlow } from "@/components/EnergyFlow";
 import { LoadsNowCard } from "@/components/LoadsNowCard";
 import { MonthCard } from "@/components/MonthCard";
@@ -17,6 +18,7 @@ export default function OverviewPage() {
         <TodayCard today={scenario.today} />
         <MonthCard month={scenario.month} />
       </div>
+      <DayChartCard series={scenario.series} />
       <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
         <LoadsNowCard loads={scenario.loads} />
         <OpenAlertsCard alerts={scenario.alerts} />
