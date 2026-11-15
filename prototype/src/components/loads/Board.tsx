@@ -4,6 +4,7 @@ import type { EnergySnapshot, Load, LoadCommand, LoadCommitment } from "@/mocks/
 import { Bar } from "../ui/Bar";
 import { Button } from "../ui/Button";
 import { ConfirmAction, type ConfirmActionProps } from "../ui/ConfirmAction";
+import { Compact } from "../ui/Reading";
 import { RelayDot } from "../ui/RelayDot";
 import { RuleChip } from "../ui/RuleChip";
 
@@ -61,7 +62,7 @@ function CommitmentColumn({ commitment }: { commitment: LoadCommitment }) {
       return (
         <div>
           <p>
-            <span className="font-medium font-mono text-heading">{done}</span> de {target} hoje
+            <Compact value={done} className="font-medium text-heading" /> de {target} hoje
           </p>
           <div role="img" aria-label={`${done} de ${target} cumpridas`} className="my-1.5">
             <Bar
@@ -76,8 +77,7 @@ function CommitmentColumn({ commitment }: { commitment: LoadCommitment }) {
       return (
         <div className="space-y-1">
           <p>
-            Pronta até{" "}
-            <span className="font-medium font-mono text-heading">{commitment.readyBy}</span>
+            Pronta até <Compact value={commitment.readyBy} className="font-medium text-heading" />
           </p>
           <p className="text-tinta-suave text-small">
             se faltar sobra, liga pela rede às {commitment.gridFallbackAt}{" "}
@@ -88,9 +88,10 @@ function CommitmentColumn({ commitment }: { commitment: LoadCommitment }) {
     case "usage":
       return (
         <p>
-          <span className="font-medium font-mono text-heading">
-            {formatDuration(commitment.todayMin)}
-          </span>{" "}
+          <Compact
+            value={formatDuration(commitment.todayMin)}
+            className="font-medium text-heading"
+          />{" "}
           ligada hoje
         </p>
       );
@@ -181,7 +182,7 @@ function Breaker({ load, energy }: { load: Load; energy: EnergySnapshot }) {
             <span className={`font-semibold ${on ? "text-ciano-ink" : "text-tinta-suave"}`}>
               {on ? "Ligada" : "Desligada"}
             </span>{" "}
-            <span className="font-medium font-mono">{formatNumber(load.powerW)} W</span>
+            <Compact value={`${formatNumber(load.powerW)} W`} className="font-medium" />
           </p>
         </div>
       </div>
