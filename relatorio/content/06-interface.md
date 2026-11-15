@@ -2,50 +2,54 @@
 
 ## Princípios
 
-A interface é um painel web responsivo que no celular funciona como
-aplicativo (PWA). A primeira tela responde às duas perguntas mais comuns do
-morador, "quanto estou gastando?" e "está tudo bem em casa?". Toda ação
-automática tem explicação: cada carga mostra quem a ligou ou desligou por
-último, uma regra ou um morador, quando, e se o relé confirmou. O morador
-manda, e qualquer carga pode passar ao modo manual; a tela diz até quando a
-automação fica de fora.
+A interface é um painel web responsivo que, no celular, funciona como
+aplicativo instalável (PWA). A tela inicial responde às duas perguntas mais
+frequentes do morador: quanto a residência está gastando e se há alguma
+situação de risco. Toda ação automática é acompanhada de explicação: cada
+carga informa a origem do último comando (uma regra ou um morador), o
+horário e a confirmação do relé. O morador mantém o controle, pois qualquer
+carga pode ser colocada em modo manual, e a tela indica até quando a
+automação permanece suspensa.
 
-Cada cor tem um só significado. Ciano é a energia solar e rosa é a rede;
-verde é normal, âmbar é atenção, laranja é aviso e vermelho é crítico. A cor
-de estado sempre vem com a palavra, para a tela continuar legível impressa ou
-para quem não distingue cores.
+Cada cor possui um único significado. O ciano representa a geração solar e
+o rosa, a rede; verde indica estado normal, âmbar indica atenção, laranja
+indica aviso e vermelho indica situação crítica. A cor de estado é sempre
+acompanhada do texto correspondente, de modo que a informação permaneça
+legível em impressão monocromática e para usuários com deficiência na
+percepção de cores.
 
-O painel trata o dado quente e o morno como a apostila descreve: o estado
-atual chega à tela assim que é medido, e o histórico recente alimenta
-gráficos que abrem em poucos segundos [@ufjf2026cap4, p. 14–15]. As leituras
-novas chegam por WebSocket, sem a página precisar perguntar
-[@ufjf2026cap5, p. 13–14].
+O painel trata os dados quentes e mornos conforme descrito na apostila: o
+estado atual é exibido assim que é medido, e o histórico recente alimenta
+gráficos carregados em poucos segundos [@ufjf2026cap4, p. 14–15]. As novas
+leituras chegam ao painel por WebSocket, sem necessidade de consultas
+periódicas [@ufjf2026cap5, p. 13–14].
 
 ## O protótipo
 
-O enunciado aceita um protótipo visual com dados simulados
-[@ufjf2026atividade]. O deste trabalho é uma aplicação Next.js (React e
-TypeScript, com Tailwind CSS), na pasta `prototype/` do repositório. Ela usa
-os componentes da biblioteca `@carneirofc/ui`, do próprio autor, e herda dela
-a identidade visual: painéis com borda em gradiente, a fonte Sora nos textos
-e IBM Plex Mono nas leituras, sobre um fundo claro que também funciona
-impresso. Cada tela destaca num painel principal a pergunta que responde.
+O enunciado admite um protótipo visual com dados simulados
+[@ufjf2026atividade]. O protótipo deste trabalho é uma aplicação Next.js
+(React e TypeScript, com Tailwind CSS), disponível na pasta `prototype/` do
+repositório. A aplicação utiliza os componentes da biblioteca
+`@carneirofc/ui`, desenvolvida pelo autor, e deriva dela a identidade
+visual: painéis com borda em gradiente, a fonte Sora nos textos e IBM Plex
+Mono nas leituras, sobre fundo claro adequado também à impressão. Em cada
+tela, um painel principal destaca a informação central daquela tela.
 
-Os dados vêm de um cenário simulado, tipado e reunido num único módulo, que
-reproduz a casa num dia útil às 14:45: leituras, cargas, dispositivos,
-alertas e as curvas das últimas 24 horas. As telas não têm números fixos no
-código; tudo é calculado a partir do cenário, e por isso os números batem
-entre as telas e com as regras do Capítulo 5. Os tipos do cenário seguem o
-dicionário de dados do Capítulo 3. As abas navegam, o filtro de alertas
-funciona e o botão "Reconhecer" muda o alerta e o contador da aba, tudo no
-próprio navegador. As figuras deste capítulo são capturas da aplicação numa
-janela de 1 024 px de largura.
+Os dados provêm de um cenário simulado, tipado e reunido em um único módulo,
+que reproduz a residência em um dia útil às 14:45, com leituras, cargas,
+dispositivos, alertas e as curvas das últimas 24 horas. As telas não contêm
+valores fixos no código; todos são calculados a partir do cenário, o que
+garante a coerência entre as telas e com as regras do Capítulo 5. Os tipos
+do cenário seguem o dicionário de dados do Capítulo 3. A navegação entre
+abas, o filtro de alertas e o reconhecimento de alertas, com atualização do
+contador da aba, funcionam no próprio navegador. As figuras deste capítulo
+são capturas da aplicação em uma janela de 1 024 px de largura.
 
 ## Navegação
 
-O painel tem quatro abas fixas (Figura 4). A notificação *push* abre direto
-o detalhe do alerta, e o Grafana fica à parte, para o instalador e para
-análises de histórico.
+O painel possui quatro abas fixas (Figura 4). A notificação *push* conduz
+diretamente ao detalhe do alerta, e o Grafana permanece à parte, destinado
+ao instalador e à análise do histórico.
 
 ![Navegação entre as telas do painel.](fig04-navegacao.png){width=80%}
 
@@ -53,14 +57,15 @@ Fonte: Elaborado pelo autor (2026).
 
 ## Visão geral
 
-A tela inicial (Figura 5) diz, antes de tudo, se a casa está comprando ou
-vendendo energia. No exemplo, o telhado gera 2,8 kW, a casa consome 2,2 kW e
-sobram 0,6 kW para a rede. Ao lado ficam o custo de hoje e do mês, com a
-projeção da conta contra o orçamento (R4), e abaixo o gráfico das últimas 24
-horas, com geração, consumo e troca com a rede. Um resumo das cargas e dos
-alertas abertos leva às outras abas. A lavadora tem um ciclo armado, mas
-espera, porque precisa de 1,2 kW de sobra: 1 000 W da carga e 200 W de folga
-(R1).
+A tela inicial (Figura 5) informa, em primeiro lugar, se a residência está
+importando ou injetando energia. No cenário, a geração é de 2,8 kW, o
+consumo é de 2,2 kW e o excedente de 0,6 kW é injetado na rede. A tela
+apresenta também o custo do dia e do mês, com a projeção da fatura em
+relação ao orçamento (R4), e o gráfico das últimas 24 horas, com geração,
+consumo e troca com a rede. Um resumo das cargas e dos alertas abertos dá
+acesso às demais abas. A lavadora possui um ciclo programado, mas aguarda um
+excedente de 1,2 kW, correspondente aos 1 000 W da carga e à margem de
+200 W da R1.
 
 ![Tela Visão geral do protótipo.](fig05-tela-visao-geral.png){width=100%}
 
@@ -68,13 +73,14 @@ Fonte: Elaborado pelo autor (2026).
 
 ## Cargas
 
-Na tela de cargas (Figura 6), cada carga controlada mostra estado e
-potência, quem deu o último comando e quando, o compromisso do dia (as horas
-da bomba, o prazo da lavadora) e os botões. Ao lado, a corrente na entrada
-da casa aparece contra o disjuntor geral, mostrando se a proteção contra
-sobrecarga (R3) está agindo. A iluminação externa está em modo manual até 23:59 porque um morador
-a desligou de manhã (Seção 5.5). O histórico mostra cada comando com a origem
-e o tempo de confirmação do relé.
+Na tela de cargas (Figura 6), cada carga controlada apresenta o estado e a
+potência, a origem e o horário do último comando, o compromisso diário (o
+tempo de funcionamento da bomba e o prazo da lavadora) e os comandos
+disponíveis. A corrente de entrada é exibida em relação à capacidade do
+disjuntor geral, indicando se a proteção contra sobrecarga (R3) está
+atuando. A iluminação externa encontra-se em modo manual até 23:59, pois foi
+desligada por um morador pela manhã (Seção 5.5). O histórico apresenta cada
+comando com a origem e o tempo de confirmação do relé.
 
 ![Tela Cargas do protótipo.](fig06-tela-cargas.png){width=100%}
 
@@ -82,13 +88,15 @@ Fonte: Elaborado pelo autor (2026).
 
 ## Segurança e saúde
 
-A Figura 7 reúne o que não é energia do dia a dia: gás e alarme da casa, que
-pode ser testado pela tela, o ar do quarto, o ar-condicionado, a tensão de
-cada fase e a saúde dos dispositivos. No exemplo, o CO~2~ do quarto passou de
-1 000 ppm há 20 minutos (R9) e o ar-condicionado está ligado com a casa vazia
-(R7). O painel de dispositivos mostra um relé atrasado (Figura 9) e conta as
-mensagens rejeitadas e as duplicatas descartadas, o que ajuda o instalador a
-achar problemas de comunicação.
+A Figura 7 reúne as informações de segurança e saúde: detecção de gás e
+estado do alarme da casa, que pode ser testado pela tela; qualidade do ar do
+quarto; funcionamento do ar-condicionado; tensão de cada fase; e saúde dos
+dispositivos. No cenário, a concentração de CO~2~ no quarto está acima de
+1 000 ppm há 20 minutos (R9), e o ar-condicionado está ligado fora do
+horário de uso (R7). O painel de dispositivos indica um relé em estado
+atrasado (Figura 9) e apresenta a contagem de mensagens rejeitadas e de
+duplicatas descartadas, informação útil ao instalador para o diagnóstico da
+comunicação.
 
 ![Tela Segurança e saúde do protótipo.](fig07-tela-seguranca.png){width=100%}
 
@@ -96,11 +104,12 @@ Fonte: Elaborado pelo autor (2026).
 
 ## Alertas
 
-A tela de alertas (Figura 8) separa os abertos dos encerrados e mostra
-severidade, regra, descrição, estado e a ação possível. Reconhecer um alerta
-crítico para a repetição do *push*, mas ele só se encerra quando a condição
-deixa de valer. A detecção de gás de dois dias antes aparece encerrada, com
-o tempo que o alarme levou para tocar e quem reconheceu.
+A tela de alertas (Figura 8) separa os alertas abertos dos encerrados e
+apresenta severidade, regra, descrição, estado e ação disponível. O
+reconhecimento de um alerta crítico interrompe a repetição da notificação,
+mas o alerta só é encerrado quando a condição deixa de ser verdadeira. A
+detecção de gás ocorrida dois dias antes aparece encerrada, com o tempo de
+acionamento do alarme e a identificação do morador que a reconheceu.
 
 ![Tela Alertas do protótipo.](fig08-tela-alertas.png){width=100%}
 
@@ -108,10 +117,10 @@ Fonte: Elaborado pelo autor (2026).
 
 ## Do protótipo visual ao funcional
 
-Os diagramas do documento (arquitetura, sequência, arbitragem, navegação,
-estados e validação) estão em Mermaid, guardados como texto e convertidos em
-figura na geração do PDF. O protótipo funcional seguiria o caminho da
-Figura 1 sem hardware: um simulador publicaria as mensagens dos dispositivos
-da Tabela 1, inclusive com as falhas da Tabela 5; o middleware validaria,
-gravaria e aplicaria as regras; e as mesmas telas trocariam o módulo
-simulado pela API REST e pelo WebSocket (Seção 4.4).
+Os diagramas deste documento (arquitetura, sequência, arbitragem,
+navegação, estados e validação) foram escritos em Mermaid e são convertidos
+em figuras durante a geração do PDF. O protótipo funcional seguiria o fluxo
+da Figura 1 sem hardware: um simulador publicaria as mensagens dos
+dispositivos da Tabela 1, incluindo as falhas da Tabela 5; o middleware
+validaria, armazenaria e aplicaria as regras; e as mesmas telas substituiriam
+o módulo simulado pela API REST e pelo canal WebSocket (Seção 4.4).
