@@ -52,17 +52,12 @@ de responder ou a geração cai.
 
 ## Escopo
 
-Ficam dentro do escopo a medição da rede, da geração solar, do chuveiro e do
-ar-condicionado; o acionamento da bomba, da lavadora e da iluminação
-externa; a detecção de gás e de CO~2~ com o alarme da casa; a qualidade da
-tensão; e o funcionamento local, sem internet.
-
-Ficam de fora, cada um por um motivo. Separar o consumo de cada aparelho a
-partir de um único medidor exige técnicas de desagregação. O chuveiro não é
-acionado: 5 500 W em 220 V são 25 A, e um relé nesse circuito é um risco. O
-ar-condicionado não é controlado, porque já tem termostato próprio. Fumaça,
-portas, fechaduras e câmeras podem entrar depois, no mesmo padrão de
-dispositivos. A integração com a distribuidora também fica de fora.
+O sistema mede a entrada da casa, a geração solar e as duas maiores cargas
+(chuveiro e ar-condicionado); aciona a bomba, a lavadora e a iluminação
+externa; detecta gás e CO~2~ e aciona o alarme da casa; acompanha a tensão
+da rede; e funciona sem internet. O restante do consumo aparece somado, como
+"resto da casa". Fumaça, portas, fechaduras e câmeras podem entrar depois,
+no mesmo padrão de dispositivos.
 
 ## Princípio de segurança
 
