@@ -31,9 +31,7 @@ O enunciado admite um protótipo visual com dados simulados
 (React e TypeScript, com Tailwind CSS), disponível na pasta `prototype/` do
 repositório. A aplicação utiliza os componentes da biblioteca
 `@carneirofc/ui`, desenvolvida pelo autor, e deriva dela a identidade
-visual: painéis com borda em gradiente, a fonte Sora nos textos e IBM Plex
-Mono nas leituras, sobre fundo claro adequado também à impressão. Em cada
-tela, um painel principal destaca a informação central daquela tela.
+visual.
 
 Os dados provêm de um cenário simulado, tipado e reunido em um único módulo,
 que reproduz a residência em um dia útil às 14:45, com leituras, cargas,
