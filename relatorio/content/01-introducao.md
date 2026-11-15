@@ -36,4 +36,4 @@ Capítulo 10 resume as limitações e os próximos passos.
 
 As fontes deste documento, das telas e de todos os diagramas estão no
 repositório público
-<https://github.com/carneirofc/ufjf-iot-projeto-integrador>.
+<https://github.com/carneirofc/1322010-2025.3-A--IoT-Smart-Home-Software-Integration>.

@@ -33,4 +33,4 @@ mesmas telas passariam a mostrar os dados do middleware. Esse é o próximo
 passo do projeto (Capítulo 10).
 
 As fontes deste documento, das telas e dos diagramas estão no repositório
-<https://github.com/carneirofc/ufjf-iot-projeto-integrador>.
+<https://github.com/carneirofc/1322010-2025.3-A--IoT-Smart-Home-Software-Integration>.
