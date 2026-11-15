@@ -4,7 +4,7 @@ import type { DaySeries, EnergySample } from "@/mocks/types";
 /** Plot geometry, in viewBox units. */
 const VIEW = { width: 936, height: 200 };
 const PLOT = { left: 40, right: 924, top: 12, bottom: 170 };
-const Y_RANGE = { min: -3, max: 5 };
+const Y_RANGE = { min: -3, max: 9 };
 const TICK_EVERY_H = 3;
 /** Hour ticks closer than this to either end would collide with the end labels. */
 const TICK_END_GAP_H = 3;

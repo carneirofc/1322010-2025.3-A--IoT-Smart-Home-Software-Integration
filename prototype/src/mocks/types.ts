@@ -173,8 +173,9 @@ export interface AirConditioner {
   on: boolean;
   onSince: ClockTime;
   powerKw: number;
-  emptyHouseFrom: ClockTime;
-  emptyHouseTo: ClockTime;
+  roomTemperatureC: number;
+  recommendedMinC: number;
+  recommendedMaxC: number;
 }
 
 // ---------- Alerts ----------

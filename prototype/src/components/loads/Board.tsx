@@ -43,7 +43,7 @@ function ModeColumn({ load }: { load: Load }) {
         <>
           <p>Ciclo armado</p>
           <p className="text-tinta-suave text-small">
-            espera {formatDecimal(cycle.waitsForSurplusKw)} kW de sobra
+            espera {formatDecimal(cycle.waitsForSurplusKw)} kW de excedente
           </p>
         </>
       ) : lastCommand ? (
@@ -89,7 +89,7 @@ function CommitmentColumn({ commitment }: { commitment: LoadCommitment }) {
             Pronta até <Compact value={commitment.readyBy} className="font-medium text-heading" />
           </p>
           <p className="text-tinta-suave text-small">
-            se faltar sobra, liga pela rede às {commitment.gridFallbackAt}{" "}
+            se faltar excedente, liga pela rede às {commitment.gridFallbackAt}{" "}
             <RuleChip rule={commitment.rule} />
           </p>
         </div>
@@ -150,10 +150,10 @@ function loadActions(load: Load, energy: EnergySnapshot): Action[] {
           label: "Ligar agora",
           tone: "primary",
           title: `Ligar ${name} agora?`,
-          description: "O ciclo começa já, sem esperar a sobra solar; a falta vem da rede.",
+          description: "O ciclo começa já, sem esperar o excedente solar; a falta vem da rede.",
           details: [
-            `Sobra agora: ${formatDecimal(surplusKw)} kW.`,
-            `O ciclo espera ${formatDecimal(load.cycle.waitsForSurplusKw)} kW de sobra.`,
+            `Excedente agora: ${formatDecimal(surplusKw)} kW.`,
+            `O ciclo espera ${formatDecimal(load.cycle.waitsForSurplusKw)} kW de excedente.`,
           ],
           confirmLabel: "Ligar agora",
         },
@@ -163,7 +163,7 @@ function loadActions(load: Load, energy: EnergySnapshot): Action[] {
         props: {
           label: "Cancelar ciclo",
           title: "Cancelar o ciclo armado?",
-          description: "O ciclo armado é desfeito e a lavadora deixa de esperar a sobra solar.",
+          description: "O ciclo armado é desfeito e a lavadora deixa de esperar o excedente solar.",
           confirmLabel: "Cancelar ciclo",
         },
       },

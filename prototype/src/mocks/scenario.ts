@@ -4,10 +4,42 @@ import type { AirQuality, Alert, EnergySnapshot, LoadCommand, Scenario } from ".
 
 /**
  * The example scenario of the report (chapter 6): the same house at the same
- * instant, a weekday in November at 14:45. Every screen reads from here.
+ * instant, Tuesday 17 November 2026 at 14:45. Every screen reads from here.
  */
 
 const NOW = "14:45";
+const DATE = { year: 2026, month: 11, day: 17 };
+
+/** Fraction of the month elapsed at DATE, NOW (drives the bill projection, R4). */
+function monthFraction(): number {
+  const [hh, mm] = NOW.split(":").map(Number) as [number, number];
+  const daysInMonth = new Date(DATE.year, DATE.month, 0).getDate();
+  return (DATE.day - 1 + (hh + mm / 60) / 24) / daysInMonth;
+}
+
+/** Today's totals, integrated from the 24 h curves (samples with hour ≥ 24). */
+function todayTotals() {
+  const step = 7.5 / 60;
+  let generated = 0;
+  let consumed = 0;
+  let exported = 0;
+  let imported = 0;
+  for (const s of daySeries.samples) {
+    if (s.hour < 24) continue;
+    generated += s.solarKw * step;
+    consumed += s.loadKw * step;
+    if (s.gridKw < 0) exported -= s.gridKw * step;
+    else imported += s.gridKw * step;
+  }
+  return {
+    generatedKwh: roundTenth(generated),
+    consumedKwh: roundTenth(consumed),
+    selfConsumptionPct: Math.round(((generated - exported) / generated) * 100),
+    gridCreditKwh: roundTenth(exported - imported),
+  };
+}
+
+const SPENT_BRL = 172;
 
 const roundTenth = (value: number): number => Math.round(value * 10) / 10;
 
@@ -24,7 +56,7 @@ function snapshotAtNow(): EnergySnapshot {
 
 const air: AirQuality = {
   co2Ppm: 1240,
-  temperatureC: 24,
+  temperatureC: 21,
   limitPpm: 1000,
   aboveLimitForMin: 20,
   scaleMinPpm: 400,
@@ -33,10 +65,42 @@ const air: AirQuality = {
 
 const pumpOn: LoadCommand = {
   at: "10:42",
-  source: { kind: "rule", rule: "R1", reason: "sobra solar" },
+  source: { kind: "rule", rule: "R1", reason: "excedente solar" },
   target: "bomba",
   action: "ligar",
   confirmedInS: 0.8,
+};
+
+const washerOnGrid: LoadCommand = {
+  at: "08:00",
+  source: { kind: "rule", rule: "R1", reason: "prazo, pela rede" },
+  target: "lavadora",
+  action: "ligar",
+  confirmedInS: 0.7,
+};
+
+const washerShed: LoadCommand = {
+  at: "08:07",
+  source: { kind: "rule", rule: "R3", reason: "sobrecarga" },
+  target: "lavadora",
+  action: "desligar",
+  confirmedInS: 0.6,
+};
+
+const washerBack: LoadCommand = {
+  at: "08:24",
+  source: { kind: "rule", rule: "R3", reason: "corrente normal" },
+  target: "lavadora",
+  action: "ligar",
+  confirmedInS: 0.7,
+};
+
+const washerDone: LoadCommand = {
+  at: "09:50",
+  source: { kind: "rule", rule: "R1", reason: "fim do ciclo" },
+  target: "lavadora",
+  action: "desligar",
+  confirmedInS: 0.6,
 };
 
 const lightsOff: LoadCommand = {
@@ -62,14 +126,14 @@ const alerts: readonly Alert[] = [
     state: { kind: "open", since: "14:40" },
   },
   {
-    id: "alert-r7-bedroom",
-    rule: "R7",
-    severity: "warning",
+    id: "alert-r6-bedroom",
+    rule: "R6",
+    severity: "attention",
     subject: "Ar-condicionado",
-    headline: "Ar-condicionado fora do horário",
-    detail: "quarto, ligado desde 13:10",
-    title: "Quarto, ligado desde 13:10",
-    description: "Fora do horário de uso.",
+    headline: "Quarto abaixo de 23 °C",
+    detail: "21 °C, ligado desde 13:10",
+    title: "Quarto a 21 °C, ligado desde 13:10",
+    description: "Ajuste o termostato para 23 a 26 °C.",
     state: { kind: "open", since: "13:40" },
   },
   {
@@ -81,7 +145,7 @@ const alerts: readonly Alert[] = [
     detail: "46 A de 50 A às 08:07",
     title: "46 A de 50 A às 08:07",
     description: "Lavadora desligada para proteger o disjuntor geral.",
-    state: { kind: "closed", at: "08:17", note: "lavadora religada" },
+    state: { kind: "closed", at: "08:24", note: "lavadora religada" },
     followUp: { label: "Ver comandos", href: "/cargas/" },
   },
   {
@@ -90,8 +154,8 @@ const alerts: readonly Alert[] = [
     severity: "critical",
     subject: "Gás",
     headline: "Gás na cozinha",
-    detail: "cozinha, 12/11 19:02",
-    title: "Cozinha, 12/11 19:02",
+    detail: "cozinha, 15/11 19:02",
+    title: "Cozinha, 15/11 19:02",
     description:
       "Alarme da casa tocou em 1 s; push a todos os moradores e ao contato de emergência.",
     state: { kind: "closed", at: "19:31", note: "reconhecido por Ana" },
@@ -103,17 +167,11 @@ export const scenario: Scenario = {
   now: NOW,
   hub: { online: true, internetOk: true },
   energy: snapshotAtNow(),
-  today: {
-    until: NOW,
-    generatedKwh: 20.4,
-    consumedKwh: 17.4,
-    selfConsumptionPct: 63,
-    gridCreditKwh: 3.0,
-  },
+  today: { until: NOW, ...todayTotals() },
   month: {
     month: "Novembro",
-    spentBrl: 151,
-    projectionBrl: 310,
+    spentBrl: SPENT_BRL,
+    projectionBrl: Math.round(SPENT_BRL / monthFraction()),
     budgetBrl: 350,
     scaleMaxBrl: 400,
     tariffFlag: "verde",
@@ -125,7 +183,7 @@ export const scenario: Scenario = {
       kind: "pool_pump",
       deviceId: "relay_pool_01",
       name: "Bomba da piscina",
-      summary: "sobra solar",
+      summary: "excedente solar",
       relay: "on",
       powerW: 742,
       mode: { kind: "automatic" },
@@ -136,7 +194,7 @@ export const scenario: Scenario = {
       kind: "washer",
       deviceId: "relay_laundry_01",
       name: "Lavadora",
-      summary: "ciclo armado, aguardando sobra",
+      summary: "ciclo armado, aguardando excedente",
       relay: "off",
       powerW: 0,
       mode: { kind: "automatic" },
@@ -155,7 +213,7 @@ export const scenario: Scenario = {
       commitment: { kind: "usage", todayMin: 0 },
     },
   ],
-  commands: [pumpOn, lightsOff],
+  commands: [pumpOn, washerDone, washerBack, washerShed, washerOnGrid, lightsOff],
   gas: { location: "cozinha", detected: false },
   alarm: { active: false },
   supply: {
@@ -171,8 +229,9 @@ export const scenario: Scenario = {
     on: true,
     onSince: "13:10",
     powerKw: 1.1,
-    emptyHouseFrom: "08:00",
-    emptyHouseTo: "17:00",
+    roomTemperatureC: air.temperatureC,
+    recommendedMinC: 23,
+    recommendedMaxC: 26,
   },
   deviceHealth: {
     devices: [

@@ -76,10 +76,10 @@ export function AirPanel({ air, alert }: { air: AirQuality; alert?: Alert }) {
   );
 }
 
-/** Bedroom air conditioner (R7): guidance only, never switched off automatically. */
+/** Bedroom air conditioner (R6): guidance only, never switched off automatically. */
 export function AirConditionerPanel({ ac, alert }: { ac: AirConditioner; alert?: Alert }) {
   const state = ruleState(alert);
-  const outsideHours = alert !== undefined && alert.state.kind !== "closed";
+  const belowRange = alert !== undefined && alert.state.kind !== "closed";
   return (
     <Panel
       id="ac-title"
@@ -106,11 +106,13 @@ export function AirConditionerPanel({ ac, alert }: { ac: AirConditioner; alert?:
           <Reading value={formatDecimal(ac.powerKw)} unit="kW" />
         </Labelled>
       </div>
-      {outsideHours ? (
-        <p className="mt-3 font-semibold text-laranja-ink">Ligado fora do horário de uso</p>
+      {belowRange ? (
+        <p className="mt-3 font-semibold text-ambar-ink">
+          Quarto a {formatNumber(ac.roomTemperatureC)} °C, abaixo da faixa recomendada
+        </p>
       ) : null}
       <p className="mt-1 text-small text-tinta-suave">
-        Casa vazia em dias úteis, das {ac.emptyHouseFrom} às {ac.emptyHouseTo}. O painel só orienta:
+        Faixa recomendada: {ac.recommendedMinC} a {ac.recommendedMaxC} °C. O painel só orienta:
         o ar-condicionado não é desligado automaticamente.
       </p>
     </Panel>
