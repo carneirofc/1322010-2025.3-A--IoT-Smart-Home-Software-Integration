@@ -7,7 +7,7 @@ const PLOT = { left: 40, right: 924, top: 12, bottom: 170 };
 const Y_RANGE = { min: -3, max: 5 };
 const TICK_EVERY_H = 3;
 /** Hour ticks closer than this to either end would collide with the end labels. */
-const TICK_END_GAP_H = 2.5;
+const TICK_END_GAP_H = 3;
 const AXIS_LABEL_Y = 192;
 const Y_LABEL_X = 32;
 const Y_LABEL_DY = 4.5;
