@@ -25,8 +25,9 @@ encaminhamento e regras SE/ENTÃO para entregar a informação adequada a cada
 usuário (Unidade 5).
 
 O trabalho apresenta limitações. O custo calculado é uma estimativa e não
-reproduz a fatura, que inclui tributos, contribuição de iluminação pública e
-regras de compensação próprias de cada distribuidora [@brasil2022lei14300].
+reproduz a fatura, que inclui tributos, contribuição de iluminação pública,
+tarifas de cada distribuidora e as regras de transição da compensação
+[@brasil2022lei14300].
 Os limites e intervalos das regras são valores iniciais, que dependem de
 calibração com dados reais da residência. O *hub* único permanece como ponto
 de falha; o nobreak, o reinício automático e a validade limitada dos
