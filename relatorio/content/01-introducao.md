@@ -1,29 +1,33 @@
 # Introdução
 
-Este documento responde à atividade prática do Capítulo 5: projetar a camada
-de software de uma solução de Internet das Coisas (IoT), do sensor até a
-aplicação, com regras automáticas, telas e tratamento de falhas
-[@ufjf2026atividade]. O tema escolhido é o 3, automação residencial e
-eficiência energética. O foco é o software; o hardware entra só no nível
-necessário para entender os dados.
+Este documento atende à atividade prática do Capítulo 5, que solicita o
+projeto da camada de software de uma solução de Internet das Coisas (IoT),
+abrangendo o fluxo de dados do sensor à aplicação, as regras de negócio
+automáticas, o protótipo das telas e o tratamento de falhas
+[@ufjf2026atividade]. Adotou-se o Tema 3, automação residencial e eficiência
+energética. O foco do trabalho é o software; o hardware é descrito apenas no
+nível necessário para caracterizar os dados.
 
-A integração com o software fecha a cadeia de valor vista na disciplina, que
-vai do fenômeno físico à informação que leva a uma ação [@ufjf2026cap5, p. 3].
-Por isso o projeto usa o conteúdo das cinco unidades: sensores
-[@ufjf2026cap1], coleta e protocolos [@ufjf2026cap2], qualidade dos dados
-[@ufjf2026cap3], armazenamento de séries temporais [@ufjf2026cap4] e
-integração [@ufjf2026cap5].
+A integração com o software constitui a última etapa da cadeia de valor
+estudada na disciplina, que parte do fenômeno físico e termina na informação
+capaz de orientar uma ação [@ufjf2026cap5, p. 3]. Por esse motivo, o projeto
+fundamenta-se no conteúdo das cinco unidades: sensores [@ufjf2026cap1],
+coleta e protocolos [@ufjf2026cap2], qualidade dos dados [@ufjf2026cap3],
+armazenamento de séries temporais [@ufjf2026cap4] e integração com o
+software [@ufjf2026cap5].
 
-O sistema, chamado aqui de Casa Monitorada, atende uma casa com energia solar
-conectada à rede. Ele mostra quanto a casa consome, gera e gasta; liga cargas
-adiáveis quando sobra energia solar e as desliga quando o disjuntor geral se
-aproxima do limite; e cuida da segurança e da saúde da casa, com detecção de
-gás e de CO~2~ ligada ao alarme e acompanhamento da tensão da rede.
+O sistema proposto, denominado Casa Monitorada, destina-se a uma residência
+com geração solar fotovoltaica conectada à rede. Ele apresenta o consumo, a
+geração e o custo da energia; aciona cargas adiáveis quando há excedente de
+geração e as desliga quando a corrente se aproxima do limite do disjuntor
+geral; e monitora a segurança e a saúde do ambiente, com detecção de gás e
+de CO~2~ integrada ao alarme da casa e acompanhamento da tensão de
+fornecimento.
 
-Os Capítulos 2 a 7 seguem a ordem da Parte A do enunciado: problema e
-usuários, dicionário de dados, arquitetura, regras, telas e riscos. O
-Capítulo 6 também descreve o protótipo visual da Parte B. O Capítulo 8 reúne
-requisitos, decisões de tecnologia e rastreabilidade, e o Capítulo 9 fecha
-com limitações e próximos passos. Os fontes do documento, das telas e dos
-diagramas estão em
+Os Capítulos 2 a 7 seguem a ordem dos itens da Parte A do enunciado:
+problema e usuários, dicionário de dados, arquitetura, regras, interface e
+riscos. O Capítulo 6 apresenta também o protótipo visual da Parte B. O
+Capítulo 8 reúne os requisitos, as decisões de tecnologia e a
+rastreabilidade, e o Capítulo 9 apresenta as considerações finais. Os
+arquivos-fonte do documento, das telas e dos diagramas estão disponíveis em
 <https://github.com/carneirofc/1322010-2025.3-A--IoT-Smart-Home-Software-Integration>.
